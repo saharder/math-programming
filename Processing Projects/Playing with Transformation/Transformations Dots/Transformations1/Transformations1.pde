@@ -1,11 +1,19 @@
+PVector i = new PVector(1,0);
+PVector j = new PVector(0,1);
+PVector targetI = new PVector(0,1);
+PVector targetJ = new PVector(1,0);
+float lerpFactor = 0.1;
+
 void setup(){
   size(480,480);
-  PVector i = new PVector(1,0);
-  PVector j = new PVector(0,1);
-  Grid g = new Grid(i,j);
 }
 
 void draw(){ 
+  background(0);
+  i = i.lerp(targetI, 0.1);
+  j = j.lerp(targetJ, 0.1);
+  Grid g = new Grid(i,j);
+  saveFrame("frames/grid_####.png");
 }
 
 class Grid{
@@ -29,7 +37,6 @@ class Grid{
     PVector mPoint;
     PVector iVecCopy;
     PVector jVecCopy;
-    stroke(4);
     for(int i = -5; i <= 5; i++){
        for(int j = -5; j <= 5; j++){
          // Deals with mutability
