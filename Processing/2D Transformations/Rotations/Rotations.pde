@@ -3,28 +3,32 @@ PVector i = new PVector(1,0);
 PVector j = new PVector(0,1);
 
 // transformed basis vectors
-PVector targetI = new PVector(3,0);
-PVector targetJ = new PVector(0,3);
+PVector targetI = new PVector(0,1);
+PVector targetJ = new PVector(-1,0);
 
 // speed of interpolation between two grids
-float lerpFactor = 0.01;
+float lerpFactor = 0.001;
 Arrow2D iArrow;
 Arrow2D jArrow;
 
+float theta = 0;
+
 void setup(){
-  size(480,480);
+  size(1000,1000);
 }
 
 void draw(){ 
   // Clear the canvas
   background(0);
   
+  theta += .01;
+  
   // iVector 
-  i = i.lerp(targetI, lerpFactor);
+  i = new PVector(cos(theta), sin(theta));
   iArrow = new Arrow2D(i.x, i.y, 200, 0, 0);
   
   // jVector
-  j = j.lerp(targetJ, lerpFactor);
+  j = new PVector(-sin(theta), cos(theta));
   jArrow = new Arrow2D(j.x, j.y, 0, 0, 200);
   
   // Grid of points
@@ -53,8 +57,8 @@ class Grid{
     PVector mPoint;
     PVector iVecCopy;
     PVector jVecCopy;
-    for(int i = -5; i <= 5; i++){
-       for(int j = -5; j <= 5; j++){
+    for(int i = -10; i <= 10; i++){
+       for(int j = -10; j <= 10; j++){
          // Deals with mutability
          iVecCopy = iVec.copy();
          jVecCopy = jVec.copy();
@@ -62,6 +66,8 @@ class Grid{
          // actual drawing
          point = iVecCopy.mult(i).add(jVecCopy.mult(j)); // p = i*iVec + j*jVec
          mPoint = new PVector(map(point.x, -5.2,5.2, 0, width), map(point.y, -5.2,5.2, height,0));
+         stroke(255);
+         fill(255);
          ellipse(mPoint.x, mPoint.y, 3, 3);
          System.out.println(point.x + ", " + point.y);
        }
