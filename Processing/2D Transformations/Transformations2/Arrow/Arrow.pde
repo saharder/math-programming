@@ -1,18 +1,19 @@
 int t = 0;
 
 void setup(){
-  size(480,480);
+  size(1000,1000);
 }
 
 void draw(){
-  t++;
-  Arrow2D a = new Arrow2D(cos(t),sin(t),255,0,0);
-  a.display(); 
+  t+= 10;
+  float rad = radians(t);
+  Arrow2D a = new Arrow2D(cos(rad),sin(rad));
 }
 
 class Arrow2D{
    PVector vector;
    float len;
+   float SCALE_FACTOR = 50;
    
    
    public Arrow2D(float x, float y){
@@ -22,16 +23,23 @@ class Arrow2D{
    }
    
    public void display(){
+      // points of the triangle
+      PVector triP1 = new PVector(-0.1,0.1);
+      PVector triP2 = new PVector(0,0);
+      PVector triP3 = new PVector(-0.1,0.1);
      
-      float mX = map(vector.x,-5.2,5.2,0,width);
-      float mY = map(vector.y,-5.2,5.2,height,0);
-      
-      // draw a triangle at (x2, y2)
+     
       pushMatrix();
-        stroke(3);
-        translate(mX,mY);
-        rotate(atan(vector.x/vector.y));
-        line(0,0,len,0); // horizontal vector with length len
+        // move origin to center of screen
+        // blow up screen 3 times
+        translate(width/2,height/2);
+        
+        // draw the line
+        // negative on y gives correct orientation
+        vector.mult(SCALE_FACTOR);
+        line(0,0,vector.x, -vector.y); 
+        
       popMatrix();
    }
+     
 }
