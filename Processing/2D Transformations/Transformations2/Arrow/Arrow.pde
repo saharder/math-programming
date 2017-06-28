@@ -1,41 +1,37 @@
+int t = 0;
+
 void setup(){
   size(480,480);
 }
 
 void draw(){
-   Arrow2D a = new Arrow2D(1,0,255,0,0); 
+  t++;
+  Arrow2D a = new Arrow2D(cos(t),sin(t),255,0,0);
+  a.display(); 
 }
 
 class Arrow2D{
-   float x;
-   float y;
-   float rVal;
-   float gVal;
-   float bVal;
+   PVector vector;
+   float len;
    
-   public Arrow2D(float x, float y, float rVal, float gVal, float bVal){
-       this.x = x;
-       this.y = y;
-       this.rVal = rVal;
-       this.gVal = gVal;
-       this.bVal = bVal;
+   
+   public Arrow2D(float x, float y){
+       vector = new PVector(x,y); // vectors
+       len = sqrt(x*x + y*y); // length of vector
        this.display();
    }
    
    public void display(){
      
-      float mO = map(0,-5.2,5.2,0,width);
-      float mX = map(x,-5.2,5.2,0,width);
-      float mY = map(y,-5.2,5.2,height,0);
+      float mX = map(vector.x,-5.2,5.2,0,width);
+      float mY = map(vector.y,-5.2,5.2,height,0);
       
       // draw a triangle at (x2, y2)
       pushMatrix();
-        stroke(rVal,gVal,bVal); 
-        fill(rVal,gVal,bVal);
-        line(mO,mO,mX,mY);
-        rotate(atan2(y, x));
-        translate(mX, mY);
-        triangle(0, 0, -10, 5, -10, -5);
-      popMatrix(); 
+        stroke(3);
+        translate(mX,mY);
+        rotate(atan(vector.x/vector.y));
+        line(0,0,len,0); // horizontal vector with length len
+      popMatrix();
    }
 }

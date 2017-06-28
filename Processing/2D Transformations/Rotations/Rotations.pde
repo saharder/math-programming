@@ -14,7 +14,7 @@ Arrow2D jArrow;
 float theta = 0;
 
 void setup(){
-  size(1000,1000);
+  size(600,600);
 }
 
 void draw(){ 
@@ -101,9 +101,9 @@ class Arrow2D{
       // draw a triangle at (x2, y2)
       pushMatrix();
         line(mO,mO,mX,mY);
-        rotate(atan2(y, x));
-        translate(mX, mY);
-        triangle(0, 0, -10, 5, -10, -5);
+        //rotate(atan2(y, x));
+        //translate(mX, mY);
+        //triangle(0, 0, -10, 5, -10, -5);
       popMatrix(); 
       noStroke();
    }

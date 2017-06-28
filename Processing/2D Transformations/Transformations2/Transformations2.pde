@@ -49,6 +49,7 @@ class Grid{
   // of the two basis vectors, lines connecting them (in basis vector directions). 
   // BUG: Note that PVectors are mutable!
   void display(){    
+    fill(0);
     PVector point;
     PVector mPoint;
     PVector iVecCopy;
