@@ -3,8 +3,8 @@ PVector i = new PVector(1,0);
 PVector j = new PVector(0,1);
 
 // transformed basis vectors
-PVector targetI = new PVector(3,0);
-PVector targetJ = new PVector(0,3);
+PVector targetI = new PVector(0,1);
+PVector targetJ = new PVector(1,0);
 
 // speed of interpolation between two grids
 float lerpFactor = 0.01;
@@ -49,7 +49,7 @@ class Grid{
   // of the two basis vectors, lines connecting them (in basis vector directions). 
   // BUG: Note that PVectors are mutable!
   void display(){    
-    fill(0);
+    fill(255);
     PVector point;
     PVector mPoint;
     PVector iVecCopy;
