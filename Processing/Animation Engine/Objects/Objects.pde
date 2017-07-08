@@ -1,33 +1,58 @@
 //TESTER
+float t = 0;
+
 void setup(){
-  size(600,600);
-  PVector iVec = new PVector(1,0);
-  PVector jVec = new PVector(0,1);
-  Grid g = new Grid(iVec,jVec);
+  size(1000,500);
+  pixelDensity(2);
 }
 
 void draw(){
+   t+= 0.2;
+   System.out.println(t);
+   Line l = new Line(0,0,cos(t), sin(t));
+   l.display();
 }
 
 
+
+/**
+This class provides methods for drawing lines. 
+**/
 class Line{
-  PVector startPoint;
-  PVector endPoint;
+  PVector start; // Starting point 
+  PVector end; // Ending point
+  float scaleFactor;  // 
+  boolean dashed = false;
   
-  public Line(PVector startPoint, PVector endPoint){
-     this.startPoint = startPoint;
-     this.endPoint = endPoint;
+  public Line(float x1, float y1, float x2, float y2){
+    start = new PVector(x1,-y1);
+    end = new PVector(x2,-y2);
+    
+     // scaleFactor defaults to 50.00 
+     // This means that one unit corresponds to fifty pixels
+     scaleFactor = 50.00; 
+     
+    start.mult(50);
+    end.mult(50);
   }
   
   public void display(){
-     line(startPoint.x, startPoint.y, endPoint.x, endPoint.y);
+     pushMatrix();
+     translate(width/2,height/2);
+     line(start.x, start.y, end.x, end.y);
+     // If the line is dashed
+     if(!dashed){  
+     }
+     popMatrix();
   }
   
-  public void scale(float scaleFactor){
-  }
-  
+  // Returns the a PVector at the midPoint of 
   public PVector getMidpoint(){
-      return new PVector((startPoint.x + endPoint.x)/2, (startPoint.y + endPoint.y)/2);
+      return new PVector((start.x + end.x)/2, (start.y + end.y)/2);
+  }
+  
+  public void setScale(float scaleFactor){
+     this.scaleFactor = scaleFactor;
   }
 }
 
@@ -42,8 +67,9 @@ in 2D based on two vectors.
 **/
 class Grid{
   // constants
-  int SCALE_FACTOR = 50; // scales the lines
-  int BREADTH = 20; // determines size of grid
+  int sFact = 50; // scaleFactor
+  // minumum and maximum x,y values on grid
+  float xMin, yMin, xMax, yMax; 
   
   // basis vectors 
   PVector iVec; // i vector
@@ -55,32 +81,10 @@ class Grid{
     drawAxes();
   }
   
-  public void drawLines(){
+  public void drawGrid(){
     
   }
   
   public void drawAxes(){
-    // Thickens lines and paints them white
-    strokeWeight(2);
-    stroke(255);
-    
-    
-    pushMatrix();
-    // moves to center of screen
-    translate(width/2, height/2);
-    
-    // Draws y and x axes
-    // X axis
-    line(BREADTH * SCALE_FACTOR * -iVec.x, 
-        BREADTH * SCALE_FACTOR * -iVec.y,
-        BREADTH * SCALE_FACTOR * iVec.x,
-        BREADTH * SCALE_FACTOR * iVec.x);
-    // Y Axis
-     line(BREADTH * SCALE_FACTOR * -jVec.x, 
-        BREADTH * SCALE_FACTOR * -jVec.y,
-        BREADTH * SCALE_FACTOR * jVec.x,
-        BREADTH * SCALE_FACTOR * jVec.x);   
-        
-     popMatrix();
   }
 }
