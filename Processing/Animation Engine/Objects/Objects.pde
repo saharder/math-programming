@@ -8,17 +8,16 @@ void setup(){
 
 void draw(){
    background(255);
-   
+   Circle c = new Circle(-2.0,0.0,2.0);
+   c.display();
    for(float i = 0; i <= 5; i += 0.25){
       Line l = new Line(i,0,i,2*sin(i + t)); 
       l.display();
    }
-   Line k = new Line(-2,0,2*cos(t) - 2, 2*sin(t));
+   Line k = new Line(-2,0,2*cos(t) - 2, 2*sin(t),255,0,0);
    Line m = new Line(2*cos(t) - 2, 2*sin(t), 0, 2*sin(t));
-   Circle c = new Circle(-2.0,0.0,2.0);
    k.display();
    m.display();
-   c.display();
    
    t +=0.01;
    
@@ -33,6 +32,7 @@ Still a work in progress.
 **/
 class Line{
   float scaleFactor;  // 
+  float rVal, gVal, bVal;
   float thickness;
   boolean dashed = false;
   
@@ -55,11 +55,17 @@ class Line{
     end.mult(50);
   }
   
+  public Line(float x1, float y1, float x2, float y2, float rVal, float gVal, float bVal){
+    this(x1, y1, x2, y2);
+    this.rVal = rVal;
+    this.gVal = gVal;
+    this.bVal = bVal;
+  }
+  
   // Draws the line on the canvas
   public void display(){
      strokeWeight(thickness); // sets thickness of lines
-     //stroke(random(255),random(255),random(255));
-     stroke(0);
+     stroke(rVal,gVal,bVal);
      pushMatrix(); // start transformation
      
      translate(width/2,height/2); // moves origin to center of screen
@@ -117,19 +123,21 @@ class DashedLine extends Line{
 
 class Circle{
    float rad, x, y;
-   float scaleFactor;
+   float scaleFactor = 50;
    
    public Circle(float x, float y, float rad){
       this.rad = rad; 
+      this.x = x;
+      this.y = y;
    }
    
    public void display(){
-     strokeWeight(5);
+     strokeWeight(1);
      stroke(0);
      pushMatrix(); // start transformation
      
      translate(width/2,height/2); // moves origin to center of screen
-     ellipse(x*scaleFactor, -y*scaleFactor, scaleFactor*rad, scaleFactor*rad);
+     ellipse(x*scaleFactor, -y*scaleFactor, 2*scaleFactor*rad, 2*scaleFactor*rad);
      
      popMatrix(); // end transformation
    }
