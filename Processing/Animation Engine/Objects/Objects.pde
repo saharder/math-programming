@@ -1,5 +1,6 @@
 //TESTER
-float t = 0;
+float t = 0; //theta
+float inc = 0.1; // space between points on sin curve
 
 void setup(){
   size(1000,500);
@@ -10,8 +11,8 @@ void draw(){
    background(255);
    Circle c = new Circle(-2.0,0.0,2.0);
    c.display();
-   for(float i = 0; i <= 5; i += 0.25){
-      Line l = new Line(i,0,i,2*sin(i + t)); 
+   for(float i = 0; i <= 7; i += inc){
+      Line l = new Line(i,2*sin(i+t),i + inc,2*sin(i + inc + t)); 
       l.display();
    }
    Line k = new Line(-2,0,2*cos(t) - 2, 2*sin(t),255,0,0);
@@ -19,7 +20,7 @@ void draw(){
    k.display();
    m.display();
    
-   t +=0.01;
+   t -=0.01;
    
    
 }
@@ -92,35 +93,6 @@ class Line{
   }
 }
 
-/**
-Class for drawing dashed or dotted lines
-**/
-class DashedLine extends Line{
-   
-  float dashLen; // length of dashes in terms of units 
-  
-  public DashedLine(float x1, float y1, float x2, float y2, float dashLen){
-     super(x1, y1, x2, y2);
-     this.dashLen = dashLen;
-  }
-  
-  public void display(){
-     PVector unit;
-    
-     PVector startDash;
-     PVector endDash;
-    
-     strokeWeight(thickness); // sets thickness of lines
-     stroke(random(255),random(255),random(255));
-     pushMatrix(); // start transformation
-     
-     translate(width/2,height/2); // moves origin to center of screen
-     line(start.x, start.y, end.x, end.y); // draws the line
-     
-     popMatrix(); // end transformation
-  }
-}
-
 class Circle{
    float rad, x, y;
    float scaleFactor = 50;
@@ -141,34 +113,4 @@ class Circle{
      
      popMatrix(); // end transformation
    }
-}
-
-
-
-/**
-The Grid Class provides functionality for drawing a coordinate grid
-in 2D based on two vectors. 
-**/
-class Grid{
-  // constants
-  int sFact = 50; // scaleFactor
-  // minumum and maximum x,y values on grid
-  float xMin, yMin, xMax, yMax; 
-  
-  // basis vectors 
-  PVector iVec; // i vector
-  PVector jVec; // j vector
-
-  public Grid(PVector iVec, PVector jVec){
-    this.iVec = iVec;
-    this.jVec = jVec;
-    drawAxes();
-  }
-  
-  public void drawGrid(){
-    
-  }
-  
-  public void drawAxes(){
-  }
 }
