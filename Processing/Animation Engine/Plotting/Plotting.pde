@@ -1,7 +1,7 @@
 float h = 1;
 
 void setup(){
-  size(750,750);
+  size(1000,500);
   pixelDensity(2);
 }
 
@@ -12,7 +12,7 @@ void draw(){
   float[] tCoords = new float[10000];
   for(int i = 0; i < rCoords.length; i++){
      float t = 0.01*i;
-     rCoords[i] = 2*(1-sin(t - h));
+     rCoords[i] = 3+ 5*cos(t-h);
      tCoords[i] = t;
   }  
   
@@ -117,4 +117,15 @@ class PolarPlot{
     endShape();
     popMatrix();
   }
+}
+
+class Axes{
+  
+   float scaleFactor = 50.0;
+   
+   public Axes(float xMin, float xMax, float yMin, float yMax, float xStep, float yStep){
+      
+   }
+  
+  
 }
