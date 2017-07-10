@@ -7,11 +7,11 @@ void setup(){
 }
 
 void draw(){
-  fill(255,20);
+  fill(255);
   rect(0,0,width,height);
   
   t += 0.1;
-  h = 4*sin(t);
+  h = 4;
   float[] xCoords = new float[100];
   float[] yCoords = new float[100];
   for(int i = 0; i < xCoords.length; i++){
@@ -28,7 +28,8 @@ void draw(){
 class Plot{
   float[] xCoords;
   float[] yCoords;
-  float pointWidth = 3.0;
+  float pointWidth = 6.0;
+  float curveWidth = 1.0;
   boolean isSmooth = true; // defaults to smooth plot
   float scaleFactor = 50.0;
   
@@ -52,13 +53,16 @@ class Plot{
   
   public void displaySmooth(){
     // Plot each point
-    strokeWeight(pointWidth-2);
+    strokeWeight(curveWidth);
+    noFill();
     pushMatrix();
     translate(width/2, height/2);
     beginShape();
+    curveVertex(scaleFactor*xCoords[0], -1 * scaleFactor * yCoords[0]);
      for(int i = 0; i < xCoords.length; i++){
          curveVertex(scaleFactor * xCoords[i], -1 * scaleFactor * yCoords[i]);
      }
+    curveVertex(scaleFactor*xCoords[xCoords.length-1], -1 * scaleFactor * yCoords[xCoords.length-1]);
     endShape();
     popMatrix();
   }
