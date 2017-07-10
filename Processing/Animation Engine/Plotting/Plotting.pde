@@ -1,30 +1,30 @@
-float t = 0;
 float h = 1;
 
 void setup(){
-  size(1000,500);
+  size(750,750);
   pixelDensity(2);
 }
 
 void draw(){
-  fill(255);
-  rect(0,0,width,height);
-  
-  t += 0.1;
-  h = 4;
-  float[] xCoords = new float[100];
-  float[] yCoords = new float[100];
-  for(int i = 0; i < xCoords.length; i++){
-     xCoords[i] = 0.1*(i-50); 
-     yCoords[i] = h*sin(0.1*(i-50));
+  background(255);
+  h+=0.1;
+  float[] rCoords = new float[10000];
+  float[] tCoords = new float[10000];
+  for(int i = 0; i < rCoords.length; i++){
+     float t = 0.01*i;
+     rCoords[i] = 2*(1-sin(t - h));
+     tCoords[i] = t;
   }  
   
-  Plot p = new Plot(xCoords, yCoords);
-  p.displayNoSmooth();
+  PolarPlot p = new PolarPlot(rCoords, tCoords);
   p.displaySmooth();
 }
 
-
+/**
+Provides methods for plotting a set of points, as well as connecting them
+Has issues if the domain (the x values) do not always yield y values, specifically
+with the sqrt function and negative values. I'm not quite sure how to address this as of now. 
+**/
 class Plot{
   float[] xCoords;
   float[] yCoords;
@@ -76,5 +76,45 @@ class Plot{
          point(scaleFactor * xCoords[i], -1 * scaleFactor * yCoords[i]);
      }
      popMatrix();
+  }
+}
+
+class PolarPlot{
+  float[] rCoords;
+  float[] tCoords;
+  float pointWidth = 6.0;
+  float curveWidth = 1.0;
+  boolean isSmooth = true; // defaults to smooth plot
+  float scaleFactor = 50.0;
+  int len;
+  
+  public PolarPlot(float[] rCoords, float[] tCoords){
+     if(rCoords.length != tCoords.length){
+        System.out.println("Not equal number of x and y coordinates"); 
+        return;
+     }
+     this.rCoords = rCoords;
+     this.tCoords = tCoords;
+     len = rCoords.length;
+     
+  }
+  
+  public void displaySmooth(){
+    strokeWeight(curveWidth);
+    noFill();
+    pushMatrix();
+    translate(width/2, height/2);
+    beginShape();
+    curveVertex(scaleFactor*rCoords[0]*cos(tCoords[0]),
+                -1 * scaleFactor * rCoords[0] * sin(tCoords[0]));
+     for(int i = 0; i < len; i++){
+         float x = rCoords[i]*cos(tCoords[i]);
+         float y = rCoords[i]*sin(tCoords[i]);
+         curveVertex(scaleFactor * x, -1 * scaleFactor * y);
+     }
+    curveVertex(scaleFactor*rCoords[len-1]*cos(tCoords[len-1]),
+            -1 * scaleFactor * rCoords[len-1] * sin(tCoords[len-1]));
+    endShape();
+    popMatrix();
   }
 }
