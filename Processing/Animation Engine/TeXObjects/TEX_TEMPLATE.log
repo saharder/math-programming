@@ -1,6 +1,6 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.5.24)  10 JUL 2017 17:32
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=latex 2015.5.24)  11 JUL 2017 11:47
 entering extended mode
- \write18 enabled.
+ restricted \write18 enabled.
  %&-line parsing enabled.
 **TEX_TEMPLATE.tex
 (./TEX_TEMPLATE.tex
@@ -15,7 +15,7 @@ Package ifluatex Info: LuaTeX not detected.
 )
 (/usr/local/texlive/2015/texmf-dist/tex/generic/oberdiek/ifpdf.sty
 Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
-Package ifpdf Info: pdfTeX in PDF mode is detected.
+Package ifpdf Info: pdfTeX in PDF mode is not detected.
 )
 (/usr/local/texlive/2015/texmf-dist/tex/generic/ifxetex/ifxetex.sty
 Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
@@ -309,7 +309,6 @@ File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 LaTeX Font Info:    ... okay on input line 15.
 
 Preview: Fontsize 10pt
-Preview: PDFoutput 1
 (/usr/local/texlive/2015/texmf-dist/tex/latex/ucs/ucsencs.def
 File: ucsencs.def 2011/01/21 Fixes to fontencodings LGR, T3
 T3\textscriptg already defined.
@@ -317,22 +316,14 @@ T3\textscriptg already defined.
 fontencoding T3 patched
 )
 Preview: Tightpage 0 0 0 0
-[1{/usr/local/texlive/2015/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./TEX_TEMPLATE.aux) ) 
+[1] (./TEX_TEMPLATE.aux) ) 
 Here is how much of TeX's memory you used:
- 3927 strings out of 493089
- 53241 string characters out of 6134842
- 108088 words of memory out of 5000000
+ 3926 strings out of 493090
+ 53231 string characters out of 6134868
+ 109429 words of memory out of 5000000
  7362 multiletter control sequences out of 15000+600000
  4952 words of font info for 18 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  34i,1n,56p,332b,56s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/local/texlive/2015/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmr10.pfb>
-Output written on TEX_TEMPLATE.pdf (1 page, 11830 bytes).
-PDF statistics:
- 12 PDF objects out of 1000 (max. 8388607)
- 7 compressed objects within 1 object stream
- 0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
+Output written on TEX_TEMPLATE.dvi (1 page, 1580 bytes).

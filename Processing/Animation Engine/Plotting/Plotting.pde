@@ -1,22 +1,22 @@
 float h = 1;
 
 void setup(){
-  size(1000,500);
+  size(800,600);
   pixelDensity(2);
 }
 
 void draw(){
   background(255);
   h+=0.1;
-  float[] rCoords = new float[10000];
-  float[] tCoords = new float[10000];
-  for(int i = 0; i < rCoords.length; i++){
+  float[] xCoords = new float[10000];
+  float[] yCoords = new float[10000];
+  for(int i = 0; i < xCoords.length; i++){
      float t = 0.01*i;
-     rCoords[i] = 3+ 5*cos(t-h);
-     tCoords[i] = t;
+     xCoords[i] = t;
+     yCoords[i] = tan(t);
   }  
   
-  PolarPlot p = new PolarPlot(rCoords, tCoords);
+  Plot p = new Plot(xCoords, yCoords);
   p.displaySmooth();
 }
 
