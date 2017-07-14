@@ -11,7 +11,6 @@ PShape shp;
 
 void setup(){
    TeXObject t = new TeXObject("");
-   t.convertTeXToDVI();
 }
 
 
@@ -21,6 +20,7 @@ class TeXObject{
   // Configuration
   String TeXTemplate = "/Users/samuelpx2016/Desktop/Math/math-programming/Processing/AnimationEngine/TeXObjects/TEX_TEMPLATE.tex";
   String dir = "/Users/samuelpx2016/Desktop/Math/math-programming/Processing/AnimationEngine/TeXObjects";
+  String dviFile = TeXTemplate.replace(".tex",".dvi");
   PShape img;
   
   // Variables
@@ -30,20 +30,29 @@ class TeXObject{
   public TeXObject(String code){
     this.code = code;
     //this.insertCode();
-    this.convertTeXToDVI();
+    //this.convertTeXToDVI();
+    
+    this.convertDVIToSVG();
   }
   
+  public void getFileDirectory(){
+      
+  }
+  
+  /**
+  
+  **/
   public void insertCode(){
+    
   }
   
   
   public void convertTeXToDVI(){
-    String[] moveToDir = {"cd", dir};
-    String[] cmd = {"/Library/TeX/texbin/latex", TeXTemplate};
+    String[] cmd = {"/Library/TeX/texbin/latex", "-output-directory=" + dir,
+                    TeXTemplate};
     Runtime rt = Runtime.getRuntime(); 
     try{
       // Passes the following commands to the terminal
-      rt.exec(moveToDir);
       Process p = rt.exec(cmd); // Compile LaTeX File to DVI
       
       // The following code prints whats on the commandline to the java
@@ -64,16 +73,44 @@ class TeXObject{
   }
   
   
-  /**
-  NOTE: FOR THE TIME BEING THIS IS DISCONTINUED BECAUSE OF ISSUES WITH
-  PROCESSING'S HANDLING OF SVG IMAGES. 
-  **/
-  public void generateSVGImage(){
+  public void convertDVIToSVG(){
+    System.out.println(dviFile);
+    System.out.println("Converting DVI to SVG...");
+    String[] cmd = {"/Library/TeX/texbin/dvisvgm", 
+                    dviFile};
+    Runtime rt = Runtime.getRuntime(); 
+    try{
+      // Passes the following commands to the terminal
+      Process p = rt.exec(cmd); // Compile LaTeX File to DVI
+      
+      // The following code prints whats on the commandline to the java
+      // command window. 
+      InputStream is = p.getInputStream();
+      BufferedReader br = new BufferedReader(new InputStreamReader(is));
+      while (true)
+      {
+          String s = br.readLine();
+          if (s == null)
+              break;
+          System.out.println(s);
+      }
+      
+    } catch (IOException e) {
+      e.printStackTrace(); // If there is an error print where it happened
+    }
     
+    System.out.println("Finished");
   }
   
   public void generatePNGImage(){
       
+  }
+  
+  /**
+  
+  **/
+  public void cleanUp(){
+    
   }
   
   public void display(){
