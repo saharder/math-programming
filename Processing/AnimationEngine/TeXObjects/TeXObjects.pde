@@ -18,10 +18,9 @@ TeXObject t;
 void setup(){
   size(1000,500);  
   pixelDensity(2);
-  img = loadImage("TEX_TEMPLATE1.png");
-  t = new TeXObject("$\\alpha, \\beta, \\gamma, \\delta$");
+  t = new TeXObject("$ \\begin{aligned} \\int_{-\\infty}^{\\infty} e^{-\\frac{(x-\\mu)^2}{z^2}} \\end{aligned}  $");
   background(255);  
-  t.scale(0.25);
+  t.scale(0.3);
 }
 
 void draw(){
@@ -36,7 +35,6 @@ void draw(){
 class TeXObject{
   
   // Configuration
-  URL location;
   String TeXTemplate = "/Users/samuelpx2016/Desktop/Math/math-programming/Processing/AnimationEngine/TeXObjects/TEX_TEMPLATE.tex";
   String dviFile = TeXTemplate.replace(".tex",".dvi");
   String pngFile = TeXTemplate.replace(".tex",".png");
@@ -125,7 +123,7 @@ class TeXObject{
   by passing a series of ocmmands to the commandline. 
   **/
   public void convertTeXToDVI(){
-    String[] cmd = {"/Library/TeX/texbin/latex", "temp.tex"};
+    String[] cmd = {"/Library/TeX/texbin/pdflatex","-output-format=dvi", "temp.tex"};
     Runtime rt = Runtime.getRuntime(); 
     try{
       // Passes the following commands to the terminal
@@ -151,7 +149,7 @@ class TeXObject{
   public void convertDVIToPNG(){
     System.out.println(dviFile);
     System.out.println("Converting DVI to PNG...");
-    String[] cmd = {"/Library/TeX/texbin/dvipng","-D1200", "-bg", "Transparent", 
+    String[] cmd = {"/Library/TeX/texbin/dvipng","-D", "1200", "-bg", "Transparent", 
                     "temp.dvi"};
     Runtime rt = Runtime.getRuntime(); 
     try{
@@ -195,6 +193,9 @@ class TeXObject{
   This method displays the rendered TeX on the canvas
   **/
   public void display(float x, float y){
+    float frameWidth = 10;
+    fill(255);
+    rect(x - frameWidth,y - frameWidth,picWidth+ 2*frameWidth, picHeight + 2*frameWidth,5,5,5,5);
     image(img, x,y, picWidth, picHeight);
   }
   
@@ -206,7 +207,9 @@ class TeXObject{
     picHeight = picHeight*scaleFactor;
   }
   
-  
+  public void addBackgroundBox(){
+     float frameWidth = 3.0;
+  }
   
   /** 
   This method returns the LaTeX sourcecode. 
