@@ -1,13 +1,15 @@
 float t= 0;
+float inc = 0.01;
+
 void setup(){
-  size(1000,500);
+  size(1200,700);
   pixelDensity(2);
   background(255);
 }
 
 
 void draw(){
-  fill(255,15);
+  fill(255,30);
   rect(0,0,width,height);
   
   Axes a = new Axes(-10,10,-5,5,1,1);  
@@ -16,14 +18,16 @@ void draw(){
   // Generating the dataset
   float[] xCoords = range(-10,10,0.01);
   float[] yCoords = new float[xCoords.length];
-  t += 0.1;
+  t += inc;
   
   for(int i = 0; i < xCoords.length; i++){
-    yCoords[i] = 3*sin(t)*sin(0.5*xCoords[i] + t); 
+    yCoords[i] = 3*tan(t)*sin(0.5*xCoords[i] + t); 
   }
   
-  Plot p = new Plot(xCoords,yCoords);
+  PolarPlot p = new PolarPlot(xCoords,yCoords);
   p.display();
+  
+  saveFrame("line-######.png");
 }
 
 
@@ -37,6 +41,12 @@ float[] range(float min, float max, float step){
     }
   return array;
 }  
+
+float[] interp(float[] start, float[] end, int steps){
+  for(int i = 0; i <  
+  
+  
+}
 
 
 /**
@@ -118,7 +128,7 @@ class PolarPlot{
      
   }
   
-  public void displaySmooth(){
+  public void display(){
     strokeWeight(curveWidth);
     noFill();
     pushMatrix();
