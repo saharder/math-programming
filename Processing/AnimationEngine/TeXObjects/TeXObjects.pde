@@ -12,21 +12,24 @@ PShape shp;
 
 float x = width/2;
 float y = height/2;
+int time = 0;
 
 TeXObject t;
-
+String code = "$\\boxed{a^2 + b^2 = c^2}$ \\qquad \\parbox{3cm}{If $a,b$ are the legs of a right triangle and $c$ is its hypotenuse.}";
 void setup(){
   size(1000,500);  
   pixelDensity(2);
-  t = new TeXObject("$ \\begin{aligned} \\int_{-\\infty}^{\\infty} e^{-\\frac{(x-\\mu)^2}{z^2}} \\end{aligned}  $");
-  background(255);  
-  t.scale(0.3);
+  background(255); 
+  frameRate(60);
+  t = new TeXObject(code);
+  t.scale(0.25);
 }
 
 void draw(){
   background(255);
-  x = lerp(x, mouseX, 0.2);
-  y = lerp(y, mouseY, 0.2);
+  rect(0,0,width,height);
+  x = lerp(x,mouseX,0.2);
+  y = lerp(y,mouseY,0.2);
   t.display(x,y);
 }
 
@@ -195,7 +198,7 @@ class TeXObject{
   public void display(float x, float y){
     float frameWidth = 10;
     fill(255);
-    rect(x - frameWidth,y - frameWidth,picWidth+ 2*frameWidth, picHeight + 2*frameWidth,5,5,5,5);
+    // rect(x - frameWidth,y - frameWidth,picWidth+ 2*frameWidth, picHeight + 2*frameWidth,5,5,5,5);
     image(img, x,y, picWidth, picHeight);
   }
   
