@@ -1,38 +1,9 @@
-//TESTER
-float t = 0; //theta
-float inc = 0.1; // space between points on sin curve
-
-void setup(){
-  size(1000,500);
-  pixelDensity(2); // for retina displays
-}
-
-void draw(){
-   background(255);
-   Circle c = new Circle(-2.0,0.0,2.0);
-   c.display();
-   for(float i = 0; i <= 7; i += inc){
-      Line l = new Line(i,2*sin(i+t),i + inc,2*sin(i + inc + t)); 
-      l.display();
-   }
-   Line k = new Line(-2,0,2*cos(t) - 2, 2*sin(t),255,0,0);
-   Line m = new Line(2*cos(t) - 2, 2*sin(t), 0, 2*sin(t));
-   k.display();
-   m.display();
-   
-   t -=0.01;
-   
-   
-}
-
-
-
 /**
 This class provides methods for drawing lines. 
 Still a work in progress. 
 **/
 class Line{
-  float scaleFactor;  // 
+  float scaleFactor;  // Defaults to 50.00
   float rVal, gVal, bVal;
   float thickness;
   boolean dashed = false;
@@ -92,6 +63,59 @@ class Line{
      this.thickness = thickness;
   }
 }
+
+class Matrix{ 
+  private int cols;
+  private int rows;
+  private float[][] array;
+  
+  public Matrix(float[][] array){
+     this.array = array;
+     cols = array[0].length;
+     rows = array.length;
+  }
+  
+  public int getRows(){
+    return rows;
+  }
+  
+  public int getCols(){
+    return cols; 
+  }
+}
+
+class Grid{
+    PVector i,j;
+    float xMin, xMax, yMin, yMax;
+    
+    
+    public Grid(PVector i, PVector j){
+      this(i, j, -5, 5, -5, 5);
+    }
+    
+    public Grid(PVector i, PVector j, float xMin, float xMax, float yMin, float yMax){
+      this.i = i;
+      this.j = j;
+      this.xMin = xMin;
+      this.xMax = xMax;
+      this.yMin = yMin;
+      this.yMax = yMax;
+    }
+    
+    public void newBasis(PVector newI, PVector newJ){
+       i = newI;
+       j = newJ;
+    }
+    
+    public void drawAxes(){
+      
+    }
+    
+    public void display(){
+      
+    }
+}
+
 
 class Circle{
    float rad, x, y;

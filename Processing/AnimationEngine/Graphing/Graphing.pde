@@ -1,3 +1,5 @@
+import GObjects.GObjects;
+
 float t= 0;
 float inc = 0.01;
 
@@ -41,13 +43,6 @@ float[] range(float min, float max, float step){
     }
   return array;
 }  
-
-float[] interp(float[] start, float[] end, int steps){
-  for(int i = 0; i <  
-  
-  
-}
-
 
 /**
 Provides methods for plotting a set of points, as well as connecting them
