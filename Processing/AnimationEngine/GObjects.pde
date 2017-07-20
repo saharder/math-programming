@@ -19,12 +19,12 @@ class Line{
      // scaleFactor defaults to 50.00 
      // This means that one unit of length corresponds to fifty pixels
      // pixelWeight defaults to 2.00, i.e. all lines are 2 pixels wide
-     scaleFactor = 50.00; 
+     scaleFactor = 100.00; 
      thickness = 1.00;
      
     // scale the line
-    start.mult(50);
-    end.mult(50);
+    start.mult(scaleFactor);
+    end.mult(scaleFactor);
   }
   
   public Line(float x1, float y1, float x2, float y2, float rVal, float gVal, float bVal){
@@ -84,37 +84,6 @@ class Matrix{
   }
 }
 
-class Grid{
-    PVector i,j;
-    float xMin, xMax, yMin, yMax;
-    
-    
-    public Grid(PVector i, PVector j){
-      this(i, j, -5, 5, -5, 5);
-    }
-    
-    public Grid(PVector i, PVector j, float xMin, float xMax, float yMin, float yMax){
-      this.i = i;
-      this.j = j;
-      this.xMin = xMin;
-      this.xMax = xMax;
-      this.yMin = yMin;
-      this.yMax = yMax;
-    }
-    
-    public void newBasis(PVector newI, PVector newJ){
-       i = newI;
-       j = newJ;
-    }
-    
-    public void drawAxes(){
-      
-    }
-    
-    public void display(){
-      
-    }
-}
 
 
 class Circle{

@@ -1,3 +1,5 @@
+import java.io.*;
+
 /**
 It has now come to my attention that Processing does not support any text in svg files,
 which is sort of some b.s. So I have to use an external java library to accomplish this task. 
@@ -171,9 +173,10 @@ class TeXObject{
     tint(255,alpha); // we want the tint to affect the rectangle too
     
     float frameWidth = 10;
-    fill(255,220);
-    rect(x - frameWidth,y - frameWidth,picWidth+ 2*frameWidth, picHeight + 2*frameWidth,5,5,5,5);
+    fill(255,150);
+    stroke(255);
     
+    rect(x - frameWidth,y - frameWidth,picWidth+ 2*frameWidth, picHeight + 2*frameWidth,5,5,5,5);
     image(img, x,y, picWidth, picHeight);
   }
   
