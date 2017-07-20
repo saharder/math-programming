@@ -14,7 +14,7 @@ void setup(){
   background(0); 
   frameRate(60);
 
-  t = new TeXObject(code4);
+  t = new TeXObject(" Mobius Transformation: $ f(z) = \\frac{az + b}{cz + d}$.");
 
   x = 100;
   y = 100;
@@ -25,8 +25,8 @@ void setup(){
 
 void draw(){
   background(0);
-  x = lerp(x,mouseX,0.2);
-  y = lerp(y,mouseY,0.2);
+  x = lerp(x,mouseX,0.1);
+  y = lerp(y,mouseY,0.1);
   t.setOpacity(frameCount*4);
   t.display(x,y);
 }
