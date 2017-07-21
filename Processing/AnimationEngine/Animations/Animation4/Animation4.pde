@@ -6,7 +6,7 @@ float t = 0;
 TeXObject TeX;
 
 void setup() {
-  size(1000, 500);
+  size(1400, 800);
   pixelDensity(2);
   background(255);
   g.display();
@@ -14,7 +14,6 @@ void setup() {
   filter(INVERT);
   
   TeX = new TeXObject("Taylor Approximations of $\\sin(x)$");
-  TeX.scale(0.3);
 
   xValues = range(-10, 10, 0.05);
   sinValues = new float[xValues.length];
@@ -44,7 +43,7 @@ void setup() {
 }
 
 void draw() {
-  saveFrame("../frames/####.png");
+  //saveFrame("../frames/####.png");
   
   background(255);
   g.display();
