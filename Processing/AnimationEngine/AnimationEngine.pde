@@ -1,14 +1,27 @@
-Grid g = new Grid(new PVector(1, 0), new PVector(0, 1));
-Vector2D v;
-Point p;
-float t = 0;
-float r = 0;
+import peasy.*;
+import peasy.org.apache.commons.math.*;
+import peasy.org.apache.commons.math.geometry.*;
 
+TeXObject t;
+TeXObjectAnimation Anim;
+int count = 1;
+
+
+import peasy.*;
+
+PeasyCam cam;
+float x,y,z;
 void setup() {
-  size(1000, 500);
-  pixelDensity(2);
-  v = new Vector2D(1,1);
-  v.display();
-  v.set(1,2);
-  v.display();
+  size(200,200,P3D);
+  x = width/2;
+  y = height/2;
+  z = 0;
+}
+
+void draw() {
+  translate(x,y,z);
+  rectMode(CENTER);
+  rect(0,0,100,100);
+
+  z++; // The rectangle moves forward as z increments.
 }

@@ -1,5 +1,0 @@
-# Information on TeXObjects Class
-
-The TeXObjects class provides methods for rendering TeX on the Processing Canvas. Ideally, one should be able to render the TeX as a vector image, since this allows for scaling without losing any clarity. However, due to some shortcomings in Processing in terms of svg support, one cannot simply make a new PShape using a LaTeX svg file (Processing doesn't do well with text in svg files). For this reason I had to look for a third party library to do the job. 
-
-The Library I settled on was Batik. Batik would allow me to store the svg file in a class. Then when I needed to display that svg, I could scale it to the size I wanted to display it at, then convert it to a raster image for actual use on the canvas. In this way I retain some of the flexibility of an svg picture (although this is far from the best solution). Hopefully in the future Processing will support more of svg. 

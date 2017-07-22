@@ -20,12 +20,12 @@ class Plot {
     this.xCoords = xCoords;
     this.yCoords = yCoords;
   }
-  
+
   public Plot(float[] xCoords, float[] yCoords, int rVal, int gVal, int bVal) {
-     this(xCoords, yCoords);
-     this.rVal = rVal;
-     this.gVal = gVal;
-     this.bVal = bVal;
+    this(xCoords, yCoords);
+    this.rVal = rVal;
+    this.gVal = gVal;
+    this.bVal = bVal;
   }
 
   public void display() {
@@ -65,6 +65,27 @@ class Plot {
   }
 }
 
+class Plot3D {
+  float[][] surface;
+
+  public Plot3D(float[][] surface) {
+    this.surface = surface;
+  }
+
+  public void display() {
+    pushMatrix();
+    translate(width/2, height/2);
+    for (int y = 0; y < surface.length; y++) {
+      for (int x = 0; x < surface[0].length; x++) {
+        beginShape();
+        
+        endShape();
+      }
+    }
+  }
+}
+
+
 class PolarPlot {
   float[] rCoords;
   float[] tCoords;
@@ -103,6 +124,7 @@ class PolarPlot {
     popMatrix();
   }
 }
+
 
 class Axes {
 
@@ -196,41 +218,41 @@ class Grid {
       l.display();
     }
   }
-  
-  public void apply(float[][] matrix){
-    if(matrix.length != 2 || matrix[0].length != 2){
-       System.out.println("Error: Matrix must be 2x2");
-       return;
+
+  public void apply(float[][] matrix) {
+    if (matrix.length != 2 || matrix[0].length != 2) {
+      System.out.println("Error: Matrix must be 2x2");
+      return;
     }
     iVec = new PVector(iVec.x * matrix[0][0] + iVec.y * matrix[1][0], iVec.x * matrix[0][1] + iVec.y * matrix[1][1]);
     jVec = new PVector(jVec.x * matrix[0][0] + jVec.y * matrix[1][0], jVec.x * matrix[0][1] + jVec.y * matrix[1][1]);
   }
-  
-  public void rotate(float theta){
-     theta = radians(theta);
-     iVec = new PVector(iVec.x * cos(theta) + iVec.y * -sin(theta), iVec.x * sin(theta) + iVec.y * cos(theta));
-     jVec = new PVector(jVec.x * cos(theta) + jVec.y * -sin(theta), jVec.x * sin(theta) + jVec.y * cos(theta));
+
+  public void rotate(float theta) {
+    theta = radians(theta);
+    iVec = new PVector(iVec.x * cos(theta) + iVec.y * -sin(theta), iVec.x * sin(theta) + iVec.y * cos(theta));
+    jVec = new PVector(jVec.x * cos(theta) + jVec.y * -sin(theta), jVec.x * sin(theta) + jVec.y * cos(theta));
   }
-  
-  public String toString(){
+
+  public String toString() {
     return "i Vector: " + iVec.x + ", " + iVec.y + " jVector: " + jVec.x + ", " + jVec.y;
   }
 }
 
-public float[] range(float min, float max, float step){
-   int size = (int)((max - min)/step);
-   float[] array = new float[size];
-   for(int i = 0; i < size; i++){
-      array[i] = min;
-      min += step;
-   }
-   return array;
+public float[] range(float min, float max, float step) {
+  int size = (int)((max - min)/step);
+  float[] array = new float[size];
+  for (int i = 0; i < size; i++) {
+    array[i] = min;
+    min += step;
+  }
+  return array;
 }
 
-public float[] lerpArray(float[] arr1, float[] arr2, float step){
+public float[] lerpArray(float[] arr1, float[] arr2, float step) {
   float[] temp = new float[arr1.length];  
-  for(int i = 0; i < temp.length; i++){
-    temp[i] = arr1[i] + (arr2[i] - arr1[i])*step; 
+  for (int i = 0; i < temp.length; i++) {
+    temp[i] = arr1[i] + (arr2[i] - arr1[i])*step;
   }
   return temp;
 }
