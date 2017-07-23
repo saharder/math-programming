@@ -1,27 +1,20 @@
-import peasy.*;
-import peasy.org.apache.commons.math.*;
-import peasy.org.apache.commons.math.geometry.*;
+float 
 
-TeXObject t;
-TeXObjectAnimation Anim;
-int count = 1;
-
-
-import peasy.*;
-
-PeasyCam cam;
-float x,y,z;
-void setup() {
-  size(200,200,P3D);
-  x = width/2;
-  y = height/2;
-  z = 0;
+void setup(){
+  size(1000,500);
+  background(255);
 }
 
-void draw() {
-  translate(x,y,z);
-  rectMode(CENTER);
-  rect(0,0,100,100);
+void draw(){ 
+  background(255);
+}
 
-  z++; // The rectangle moves forward as z increments.
+void keyPressed(){
+  if(keyCode == DOWN){
+     println("down"); 
+     background(0);
+  }
+  if(keyCode == UP){
+    background(255);  
+  }
 }

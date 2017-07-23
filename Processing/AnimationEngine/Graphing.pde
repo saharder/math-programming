@@ -74,14 +74,21 @@ class Plot3D {
 
   public void display() {
     pushMatrix();
-    translate(width/2, height/2);
-    for (int y = 0; y < surface.length; y++) {
-      for (int x = 0; x < surface[0].length; x++) {
-        beginShape();
-        
+    rotateX(PI/4);
+    
+    for (int y = 0; y < surface.length-1; y++) {
+      for (int x = 0; x < surface[0].length-1; x++) {
+        fill(255,0,0);
+        stroke(255,0,0);
+        beginShape(QUAD_STRIP);
+        vertex(x, y, surface[x][y]);
+        vertex(x + 1, y, surface[x+1][y+1]);
+        vertex(x, y + 1, surface[x][y+1]);
+        vertex(x + 1, y + 1, surface[x+1][y+1]);
         endShape();
       }
     }
+    popMatrix();
   }
 }
 
