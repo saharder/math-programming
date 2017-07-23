@@ -41,6 +41,9 @@ class TeXObject {
     // And finally convert the dvi to a png we can use
     this.convertDVIToPNG();
     
+    // make the text white
+    img.filter(INVERT);
+    
     // The reason for scaling down the rendered TeX is that we render it 
     // at a very high resolution, so by defualt processing will display it
     // quite large. This gets it down to a reasonable size. 
@@ -186,8 +189,8 @@ class TeXObject {
     tint(255, alpha); // we want the tint to affect the rectangle too
 
     float frameWidth = 10; // This determines how thick the bounding rectangle is
-    fill(255, 150); // We don't want the back rectangle to be super dark
-    stroke(255); // make that background the same color as the fill
+    fill(0, 150); // We don't want the back rectangle to be super dark
+    stroke(0); // make that background the same color as the fill
 
     // draw box behind
     rect(x - frameWidth, y - frameWidth, picWidth+ 2*frameWidth, picHeight + 2*frameWidth, 5, 5, 5, 5);

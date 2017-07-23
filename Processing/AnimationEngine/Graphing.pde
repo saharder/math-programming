@@ -4,28 +4,39 @@
  with the sqrt function and negative values. I'm not quite sure how to address this as of now. 
  **/
 class Plot {
+  // These contain the main data for our curve
   float[] xCoords;
   float[] yCoords;
+
+  // Self explanatory
   float pointWidth = 6.0;
   float curveWidth = 1.0;
+
   boolean isSmooth = true; // defaults to smooth plot
+
+  // This value should not be changed to maintain
+  // consistency between different classes. 
   float scaleFactor = 100.0;
-  int rVal, gVal, bVal;
+
+  // These store the color of the curve
+  color c;
+
+  // This is the shape that we display on the screen:
+  PShape curve;
 
   public Plot(float[] xCoords, float[] yCoords) {
+    this(xCoords, yCoords, 255,255,255);
+  }
+
+  public Plot(float[] xCoords, float[] yCoords, int rVal, int gVal, int bVal) {
+    c = color(rVal, gVal, bVal);
     if (xCoords.length != yCoords.length) {
       System.out.println("Not equal number of x and y coordinates"); 
       return;
     }
     this.xCoords = xCoords;
     this.yCoords = yCoords;
-  }
-
-  public Plot(float[] xCoords, float[] yCoords, int rVal, int gVal, int bVal) {
-    this(xCoords, yCoords);
-    this.rVal = rVal;
-    this.gVal = gVal;
-    this.bVal = bVal;
+    this.generateCurve();
   }
 
   public void display() {
@@ -36,20 +47,23 @@ class Plot {
     }
   }
 
+  public void generateCurve() {
+    curve = createShape(); // Instantiates the curve
+    curve.beginShape();
+    curve.noFill();
+    curve.stroke(c);
+    curve.strokeWeight(curveWidth); // Sets the width of the curve 
+    //curve.vertex(scaleFactor*xCoords[0], -1 * scaleFactor * yCoords[0]);
+    for (int i = 0; i < xCoords.length; i++) {
+      curve.vertex(scaleFactor * xCoords[i], -1 * scaleFactor * yCoords[i]);
+    }
+    curve.endShape();
+  }
+
   public void displaySmooth() {
-    // Plot each point
-    strokeWeight(curveWidth);
-    stroke(rVal, gVal, bVal);
-    noFill();
     pushMatrix();
     translate(width/2, height/2);
-    beginShape();
-    curveVertex(scaleFactor*xCoords[0], -1 * scaleFactor * yCoords[0]);
-    for (int i = 0; i < xCoords.length; i++) {
-      curveVertex(scaleFactor * xCoords[i], -1 * scaleFactor * yCoords[i]);
-    }
-    curveVertex(scaleFactor*xCoords[xCoords.length-1], -1 * scaleFactor * yCoords[xCoords.length-1]);
-    endShape();
+    shape(curve);
     popMatrix();
   }
 
@@ -75,11 +89,11 @@ class Plot3D {
   public void display() {
     pushMatrix();
     rotateX(PI/4);
-    
+
     for (int y = 0; y < surface.length-1; y++) {
       for (int x = 0; x < surface[0].length-1; x++) {
-        fill(255,0,0);
-        stroke(255,0,0);
+        fill(255, 0, 0);
+        stroke(255, 0, 0);
         beginShape(QUAD_STRIP);
         vertex(x, y, surface[x][y]);
         vertex(x + 1, y, surface[x+1][y+1]);
@@ -181,6 +195,7 @@ class Grid {
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00;
   float pixWeight = 1.00;
+  int rVal, gVal, bVal;
 
 
   public Grid(PVector i, PVector j) {
@@ -195,6 +210,12 @@ class Grid {
     this.yMin = yMin;
     this.yMax = yMax;
   }
+  
+  public void setColor(int r, int g, int b){
+    rVal = r;
+    gVal = g;
+    bVal = b;
+  }
 
   public void newBasis(PVector newI, PVector newJ) {
     iVec = newI;
@@ -202,6 +223,7 @@ class Grid {
   }
 
   public void display() {
+    
     float iX = iVec.x;
     float iY = iVec.y;
     float jX = jVec.x;
@@ -209,7 +231,7 @@ class Grid {
 
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
-        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY); 
+        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, rVal, gVal, bVal); 
       if (k == 0) {
         l.setThickness(axesPixWeight);
       }
@@ -218,7 +240,7 @@ class Grid {
 
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
-        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY);
+        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, rVal, gVal, bVal);
       if (k == 0) {
         l.setThickness(axesPixWeight);
       }
