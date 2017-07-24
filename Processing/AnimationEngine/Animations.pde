@@ -1,5 +1,5 @@
 /**
- This is an experiment in using classes for animations. 
+ * This is an experiment in using classes for animations. 
  **/
 class TeXObjectAnimation {
 
@@ -51,4 +51,10 @@ class TeXObjectAnimation {
 
   public void fadeOut(int startFrame, int duration) {
   }
+}
+
+class PlotAnimation{ 
+  boolean isAnimating = false;
+
+  
 }

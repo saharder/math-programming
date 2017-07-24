@@ -1,5 +1,10 @@
 A note on some of the dependencies of this project. 
 
+1. Valid LaTeX Distribution
+2. Processing (3.0 or later)
+3. dvipng
+
+
 # Known Bugs
 
 1. If there are discontinuities in the domain for the Plot Class, or certain areas where the function is undefined, then Plot does not connect the dots in the correct way. 

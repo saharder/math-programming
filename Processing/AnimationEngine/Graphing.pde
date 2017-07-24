@@ -16,7 +16,7 @@ class Plot {
 
   // This value should not be changed to maintain
   // consistency between different classes. 
-  float scaleFactor = 100.0;
+  float scaleFactor = Constants.SCALE_FACTOR;
 
   // These store the color of the curve
   color c;
@@ -113,7 +113,7 @@ class PolarPlot {
   float pointWidth = 6.0;
   float curveWidth = 1.0;
   boolean isSmooth = true; // defaults to smooth plot
-  float scaleFactor = 50.0;
+  float scaleFactor = Constants.SCALE_FACTOR;
   int len;
 
   public PolarPlot(float[] rCoords, float[] tCoords) {
@@ -149,7 +149,7 @@ class PolarPlot {
 
 class Axes {
 
-  float scaleFactor = 50.0;
+  float scaleFactor = Constants.SCALE_FACTOR;
   Line xAxis;
   Line yAxis;
   float xStep, yStep;
@@ -232,8 +232,8 @@ class Grid {
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
         k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, rVal, gVal, bVal); 
-      if (k == 0) {
-        l.setThickness(axesPixWeight);
+      if (k == 0) { // If this is the y axis
+        l.setThickness(axesPixWeight); // thicken it some
       }
       l.display();
     }
@@ -241,8 +241,8 @@ class Grid {
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
         k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, rVal, gVal, bVal);
-      if (k == 0) {
-        l.setThickness(axesPixWeight);
+      if (k == 0) { // if this is the x axis
+        l.setThickness(axesPixWeight); // thicken it some
       }
       l.display();
     }

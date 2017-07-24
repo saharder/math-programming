@@ -5,7 +5,7 @@ class Point{
   float x;
   float y;
   float radius = 5.0;
-  float scaleFactor = 100.0;
+  float scaleFactor = Constants.SCALE_FACTOR;
   
   public Point(float x, float y){
       this.x = x;
@@ -33,7 +33,7 @@ This class provides methods for drawing lines.
 Still a work in progress. 
 **/
 class Line{
-  float scaleFactor;  // Defaults to 50.00
+  float scaleFactor = Constants.SCALE_FACTOR;  // Defaults to 50.00
   float rVal, gVal, bVal;
   float thickness;
   boolean dashed = false;
@@ -49,7 +49,6 @@ class Line{
      // scaleFactor defaults to 50.00 
      // This means that one unit of length corresponds to fifty pixels
      // pixelWeight defaults to 2.00, i.e. all lines are 2 pixels wide
-     scaleFactor = 100.00; 
      thickness = 1.00;
      
     // scale the line
@@ -157,7 +156,7 @@ class Matrix{
 
 class Circle{
    float rad, x, y;
-   float scaleFactor = 50;
+   float scaleFactor = Constants.SCALE_FACTOR;
    
    public Circle(float x, float y, float rad){
       this.rad = rad; 
