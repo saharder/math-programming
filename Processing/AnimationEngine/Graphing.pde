@@ -1,8 +1,9 @@
 /**
- Provides methods for plotting a set of points, as well as connecting them
- Has issues if the domain (the x values) do not always yield y values, specifically
- with the sqrt function and negative values. I'm not quite sure how to address this as of now. 
+* Provides methods for plotting a set of points, as well as connecting them
+* Has issues if the domain (the x values) do not always yield y values, specifically
+* with the sqrt function and negative values. I'm not quite sure how to address this as of now. 
  **/
+
 class Plot {
   // These contain the main data for our curve
   float[] xCoords;

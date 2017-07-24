@@ -89,11 +89,12 @@ public void draw() {
     t = t % 51;
   }
   p.display();
+  TeX.display(width - TeX.getWidth(), 20 + TeX.getHeight());
 }
 
 public void keyPressed(){
   // A left key press should revert the animation to a previous state
-  if(keyCode == RIGHT){
+  if(keyCode == RIGHT && end < taylor.length-1 && animate == false){
       animate = true;
       start += 1;
       end += 1;
@@ -104,6 +105,11 @@ public void keyPressed(){
       animate = true;
 
       println("RIGHT");
+
+      if(start > end){
+        start--;
+        end--;
+      }
       int temp = start;
       start = end;
       end = temp;
