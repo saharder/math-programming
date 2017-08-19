@@ -196,7 +196,7 @@ class Grid {
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00;
   float pixWeight = 1.00;
-  int gridColor;
+  int rVal, gVal, bVal;
 
 
   public Grid(PVector i, PVector j) {
@@ -212,8 +212,10 @@ class Grid {
     this.yMax = yMax;
   }
   
-  public void setColor(int c){
-    gridColor = c;
+  public void setColor(int r, int g, int b){
+    rVal = r;
+    gVal = g;
+    bVal = b;
   }
 
   public void newBasis(PVector newI, PVector newJ) {
@@ -230,7 +232,7 @@ class Grid {
 
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
-        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, gridColor); 
+        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, rVal, gVal, bVal); 
       if (k == 0) { // If this is the y axis
         l.setThickness(axesPixWeight); // thicken it some
       }
@@ -239,7 +241,7 @@ class Grid {
 
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
-        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, gridColor);
+        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, rVal, gVal, bVal);
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
       }
@@ -262,8 +264,6 @@ class Grid {
     jVec = new PVector(jVec.x * cos(theta) + jVec.y * -sin(theta), jVec.x * sin(theta) + jVec.y * cos(theta));
   }
 
-  // Purely for debugging purposes,
-  // used to track the i and j vector of the grid. 
   public String toString() {
     return "i Vector: " + iVec.x + ", " + iVec.y + " jVector: " + jVec.x + ", " + jVec.y;
   }

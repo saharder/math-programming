@@ -21,7 +21,7 @@ void setup() {
     for(int j = 0; j < surface[0].length; j++){
        float x = map(i,0,surface.length, -10,10);
        float y = map(j,0,surface.length, -10,10);
-       surface[i][j] = 0.1*(x*x + x*y * y*y);
+       surface[i][j] = 0.1*(x*x - y*y);
     }
   }
   plot =  new Plot3D(surface);
