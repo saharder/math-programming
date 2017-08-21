@@ -179,7 +179,8 @@ class TeXObject {
   }
 
   /** 
-   This method displays the rendered TeX on the canvas
+   * This method displays the rendered TeX on the canvas
+   * the x and y are specified relative to the canvas's grid. 
    **/
   public void display(float x, float y) {
     // Reset the location

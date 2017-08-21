@@ -196,8 +196,14 @@ class Grid {
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00;
   float pixWeight = 1.00;
-  int gridColor;
 
+  float opacity = 256;
+
+  int gridColor = Constants.WHITE;
+
+  public Grid(Vector2D i, Vector2D j){
+    this(i.getPVector(), j.getPVector());
+  }
 
   public Grid(PVector i, PVector j) {
     this(i, j, -10, 10, -10, 10);
@@ -216,10 +222,15 @@ class Grid {
     gridColor = c;
   }
 
-  public void newBasis(PVector newI, PVector newJ) {
+  public void setBasis(PVector newI, PVector newJ) {
     iVec = newI;
     jVec = newJ;
   }
+
+  public void setBasis(Vector2D newI, Vector2D newJ){
+    this.setBasis(newI.getPVector(), newJ.getPVector());
+  }
+
 
   public void display() {
     
@@ -231,18 +242,28 @@ class Grid {
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
         k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, gridColor); 
+
+      l.setThickness(pixWeight);
+      l.setOpacity(opacity);
+
       if (k == 0) { // If this is the y axis
         l.setThickness(axesPixWeight); // thicken it some
       }
+
       l.display();
     }
 
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
         k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, gridColor);
+
+      l.setOpacity(opacity);
+      l.setThickness(pixWeight);
+
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
       }
+      
       l.display();
     }
   }
@@ -260,6 +281,10 @@ class Grid {
     theta = radians(theta);
     iVec = new PVector(iVec.x * cos(theta) + iVec.y * -sin(theta), iVec.x * sin(theta) + iVec.y * cos(theta));
     jVec = new PVector(jVec.x * cos(theta) + jVec.y * -sin(theta), jVec.x * sin(theta) + jVec.y * cos(theta));
+  }
+
+  public void setOpacity(float opacity){
+    this.opacity = opacity;
   }
 
   // Purely for debugging purposes,

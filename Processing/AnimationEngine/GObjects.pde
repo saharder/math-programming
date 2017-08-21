@@ -1,5 +1,5 @@
 /** 
-*This class allows us to draw points
+* This class provides graphical capabilities for drawing points
 **/
 class Point{
   float x;
@@ -45,9 +45,10 @@ class Point{
 *Still a work in progress. 
 **/
 class Line{
-  float scaleFactor = Constants.SCALE_FACTOR;  // Defaults to 50.00
-  float thickness;
-  boolean dashed = false;
+  // See constants.java for details
+  float scaleFactor = Constants.SCALE_FACTOR; 
+  float thickness = Constants.DEFAULT_LINE_THICKNESS;
+  float opacity = 256;
   
   int lineColor; // color
   
@@ -58,11 +59,6 @@ class Line{
   public Line(float x1, float y1, float x2, float y2){
     start = new PVector(x1,y1);
     end = new PVector(x2,y2);
-    
-     // scaleFactor defaults to 50.00 
-     // This means that one unit of length corresponds to fifty pixels
-     // pixelWeight defaults to 2.00, i.e. all lines are 2 pixels wide
-     thickness = 2.00;
   }
   
   public Line(float x1, float y1, float x2, float y2, int lineColor){
@@ -73,7 +69,7 @@ class Line{
   // Draws the line on the canvas
   public void display(){
      strokeWeight(thickness); // sets thickness of lines
-     stroke(lineColor);
+     stroke(lineColor, opacity);
 
      pushMatrix(); // start transformation
      
@@ -103,6 +99,10 @@ class Line{
   public void setThickness(float thickness){
      this.thickness = thickness;
   }
+
+  public void setOpacity(float opacity){
+    this.opacity = opacity;
+  }
   
   public void set(float x1, float y1, float x2, float y2){
     start.set(x1,y1);
@@ -125,8 +125,11 @@ class Vector2D{
   Line body;
   Point endPoint;
 
-  // color
+  // color. Colors are usually assigned using color constants from the Constants.java file
   int vectorColor;
+
+  // TeX label
+  TeXObject t;
 
   // NOTE: Vector2D inherits its scaling from the Line and Point classes. 
   // I try to minimize the number of instance variables dedicated to scaling,
@@ -143,11 +146,22 @@ class Vector2D{
      this(0,0,x,y);
   }
 
+  public Vector2D(float x, float y, int c){
+    this(0,0,x,y,c);
+  }
+
   // Allows for anchoring of the vector *not* at the origin. 
   public Vector2D(float x1, float y1, float x2, float y2){
+    this(x1,y1,x2,y2,Constants.WHITE);
+  }
+
+  // Allows for anchoring of the vector *not* at the origin. 
+  public Vector2D(float x1, float y1, float x2, float y2, int c){
     vector = new PVector(x2,y2); 
     endPoint = new Point(x2,y2);
     body = new Line(x1,y1,x2,y2);
+    vectorColor = c;
+    setColor(vectorColor);
   }
   
   // Display the vector on the canvas
@@ -157,8 +171,14 @@ class Vector2D{
     body.display();
     // Draw endpoint
     endPoint.display();
+
+    // Label the vector
   }
   
+  public void set(PVector newVector){
+    this.set(newVector.x, newVector.y);
+  }
+
   // Set the x and y of your vector
   public void set(float x, float y){
     vector.set(x,y);  
@@ -166,17 +186,72 @@ class Vector2D{
     body.set(0,0,x,y);
   }
 
+
   // Set the color of the vector
   public void setColor(int c){
+    vectorColor = c;
     endPoint.setColor(c);
     body.setColor(c);
   }
 
-  // Linearly interpolate between one PVector and another
-  public PVector lerp(PVector other, float lerpFactor){
-    return this.lerp(other, lerpFactor);
+  // returns midpoint of vector
+  public PVector getMidpoint(){
+    return body.getMidpoint();
+  }
+
+  public float getX(){
+    return vector.x;
+  }
+
+  public float getY(){
+    return vector.y;
+  }
+
+  public PVector getPVector(){
+    return vector; // mutable?
+  }
+
+  // Linearly interpolate between one Vector2D and another
+  public Vector2D lerp(Vector2D other, float lerpFactor){
+    // creates a copy of the vector instance in this class
+    // this is necessary since the PVector object is mutable. 
+    // we would like to preserve the vector object. 
+     PVector copy = vector.get(); 
+
+    copy.lerp(other.getPVector(), lerpFactor);
+    return new Vector2D(copy);
   }
 }
+
+class Det2D{
+  Vector2D v,w;
+  float scaleFactor = Constants.SCALE_FACTOR;
+  int fillColor;
+
+
+  public Det2D(Vector2D v,Vector2D w, int fillColor){
+    this.v = v;
+    this.w = w;
+    this.fillColor = fillColor;
+  }
+
+  public Det2D(float x1, float y1, float x2, float y2, int fillColor){
+    this(new Vector2D(x1,y1), new Vector2D(x2,y2), fillColor);
+  }
+
+  public void display(){
+    fill(fillColor, 50);
+    stroke(fillColor);
+
+    pushMatrix();
+    translate(width/2, height/2);
+    quad(0,0, v.getX()*scaleFactor, -v.getY()*scaleFactor, 
+         (v.getX() + w.getX())*scaleFactor, (-v.getY() - w.getY())*scaleFactor,
+         w.getX()*scaleFactor, -w.getY()* scaleFactor );
+    popMatrix();
+  }
+}
+
 
 
 
@@ -202,6 +277,8 @@ class Matrix{
 
 
 
+
+// not really very useful right now
 class Circle{
    float rad, x, y;
    float scaleFactor = Constants.SCALE_FACTOR;
