@@ -16,9 +16,12 @@ public final class Constants{
 	public static final float DEFAULT_LINE_THICKNESS = 2.00f;
 
 	// BRACE CONSTANTS
-	public static final float BRACE_WIDTH = 20.0f;
-	public static final float BRACE_WEIGHT = 1.5f;
+	public static final float BRACE_WIDTH = 20.0f; // determines the width of brace
+	public static final float BRACE_WEIGHT = 1.5f; // determines the thickness of brace (in pixels)
 
+	// TEX CONSTANTS
+	public static final float TEX_FRAME_WIDTH = 5.0f; // seperation between tex and border of box
+	public static final float TEX_SCALE_FACTOR = 0.5f; 
 
 	// Colors!!! 
 	// Note that I am not using 
