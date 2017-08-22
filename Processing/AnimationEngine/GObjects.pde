@@ -252,6 +252,69 @@ class Det2D{
   }
 }
 
+//
+// This is a Brace class which provides methods for drawing a brace over a particular portion
+// of a picture. 
+//
+
+class Brace{
+  float x1, y1, x2,y2;
+  int braceColor = Constants.WHITE;
+  float scaleFactor = Constants.SCALE_FACTOR;
+  float length;
+  float braceWidth = Constants.BRACE_WIDTH;
+  float braceWeight = Constants.BRACE_WEIGHT;
+
+  TeXObject label;
+
+  public Brace(float x1, float y1, float x2, float y2){
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    length = sqrt(pow((x1 - x2),2) + pow((y1 - y2),2));
+  }
+
+  public Brace(float x1, float y1, float x2, float y2, String label){
+    this(x1,y1,x2,y2);
+    this.label = new TeXObject(label);
+  }
+
+  public void display(){
+    float angle = 0;
+
+    if(x1 == x2){
+      if(y1 < y2){
+        angle = PI/2.0;
+      }
+      else{
+        angle = 3*PI/2.0;
+      }
+    }
+    else{
+      angle = atan((y2-y1)/(x2-x1));
+    }
+
+    pushMatrix();
+    translate(width/2, height/2);
+
+    translate(scaleFactor * x1, -1 * scaleFactor * y1);
+    rotate(-angle);
+    
+    noFill();
+
+    stroke(braceColor);
+    strokeWeight(braceWeight);
+
+    bezier(0,0, 0, braceWidth, (scaleFactor * length)/2.0, 0,   (scaleFactor * length)/2.0, braceWidth);
+    bezier(scaleFactor * length, 0, scaleFactor * length, braceWidth, 
+      (scaleFactor * length)/2.0, 0, 
+      (scaleFactor * length)/2.0, braceWidth);
+
+    popMatrix();
+  }
+}
+
 
 
 

@@ -31,6 +31,9 @@ class TeXObject {
   // Location Variables
   float x, y;
 
+  // Scale Factor
+  float scaleFactor = Constants.SCALE_FACTOR;
+
   public TeXObject(String code) {
     // First we want to save the code to a string
     this.code = code;
@@ -200,8 +203,19 @@ class TeXObject {
     image(img, x, y, picWidth, picHeight);
   }
 
+  //
+  // This is a better display function for the tex object
+  //
+  public void displayCoordinate(float x, float y){
+    pushMatrix();
+    translate(width/2, height/2);
+    this.display(x*scaleFactor-picWidth/2.0, -y * scaleFactor - picHeight/2.0);
+    popMatrix();
+  }
+
+
   /**
-   This method scales the image
+  *This method scales the image
    **/
   public void scale(float scaleFactor) {
     picWidth = picWidth*scaleFactor;
@@ -209,8 +223,8 @@ class TeXObject {
   }
 
   /**
-   This method changes the opacity of the image. 
-   display() must be called again for it to take effect. 
+   *This method changes the opacity of the image. 
+   *display() must be called again for it to take effect. 
    **/
   public void setOpacity(float alpha) {
     this.alpha = alpha;

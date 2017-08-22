@@ -31,14 +31,19 @@ PImage bg;
 Vector2D i = new Vector2D(1,0, Constants.RED);
 
 Vector2D j = new Vector2D(0,1); 
-Vector2D targetJ = new Vector2D(1,1);
+Vector2D targetJ = new Vector2D(2,-1);
+
+Brace b;
 
 
 TeXObject label;
+TeXObject vectorLabel;
 
 public void setup(){
   
   
+
+  label=new TeXObject("$ \\det \\left( \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\right) = ad - bc.   $");
 
   background(Constants.BLACK);
   backG.setOpacity(56);
@@ -46,11 +51,16 @@ public void setup(){
   bg = get();
 
 
+  b = new Brace(0,0,i.getX(), i.getY());
+
   i.display();
   j.display();
 
    d = new Det2D(i,j, Constants.YELLOW);
    d.display();
+   b.display();
+
+   vectorLabel = new TeXObject("$\\det(A)$");
 
 }
 
@@ -58,7 +68,8 @@ public void draw(){
   background(bg);
 
   if(t < 1){
-    t += 0.01f;
+    t = round((t + 0.01f)*100)/100.0f; // noticed some weird accuracy issues with floating point numbers
+    //println(t);
   }
 
   float lerpProgress = t;
@@ -68,16 +79,19 @@ public void draw(){
 
   // v.set(cos(t)*4,0);
   g.setBasis(i,lerpJ);
- d = new Det2D(i,lerpJ, Constants.YELLOW);
+  d = new Det2D(i,lerpJ, Constants.YELLOW);
+  b = new Brace(0,0,lerpJ.getX(), lerpJ.getY());
 
-
- g.display();
- d.display();
-
+  g.display();
+  d.display();
   i.display();
+
+  b.display();
   lerpJ.display();
 
 
+  label.displayCoordinate(3,1);
+  vectorLabel.displayCoordinate((lerpJ.getX()+ i.getX())/2, (lerpJ.getY() +i.getY())/2);
 }
 
 
@@ -398,6 +412,69 @@ class Det2D{
   }
 }
 
+//
+// This is a Brace class which provides methods for drawing a brace over a particular portion
+// of a picture. 
+//
+
+class Brace{
+  float x1, y1, x2,y2;
+  int braceColor = Constants.WHITE;
+  float scaleFactor = Constants.SCALE_FACTOR;
+  float length;
+  float braceWidth = Constants.BRACE_WIDTH;
+  float braceWeight = Constants.BRACE_WEIGHT;
+
+  TeXObject label;
+
+  public Brace(float x1, float y1, float x2, float y2){
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
+    length = sqrt(pow((x1 - x2),2) + pow((y1 - y2),2));
+  }
+
+  public Brace(float x1, float y1, float x2, float y2, String label){
+    this(x1,y1,x2,y2);
+    this.label = new TeXObject(label);
+  }
+
+  public void display(){
+    float angle = 0;
+
+    if(x1 == x2){
+      if(y1 < y2){
+        angle = PI/2.0f;
+      }
+      else{
+        angle = 3*PI/2.0f;
+      }
+    }
+    else{
+      angle = atan((y2-y1)/(x2-x1));
+    }
+
+    pushMatrix();
+    translate(width/2, height/2);
+
+    translate(scaleFactor * x1, -1 * scaleFactor * y1);
+    rotate(-angle);
+    
+    noFill();
+
+    stroke(braceColor);
+    strokeWeight(braceWeight);
+
+    bezier(0,0, 0, braceWidth, (scaleFactor * length)/2.0f, 0,   (scaleFactor * length)/2.0f, braceWidth);
+    bezier(scaleFactor * length, 0, scaleFactor * length, braceWidth, 
+      (scaleFactor * length)/2.0f, 0, 
+      (scaleFactor * length)/2.0f, braceWidth);
+
+    popMatrix();
+  }
+}
+
 
 
 
@@ -643,7 +720,7 @@ class Grid {
   PVector iVec, jVec;
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00f;
-  float pixWeight = 1.00f;
+  float pixWeight = 0.50f;
 
   float opacity = 256;
 
@@ -711,7 +788,7 @@ class Grid {
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
       }
-      
+
       l.display();
     }
   }
@@ -791,6 +868,9 @@ class TeXObject {
 
   // Location Variables
   float x, y;
+
+  // Scale Factor
+  float scaleFactor = Constants.SCALE_FACTOR;
 
   public TeXObject(String code) {
     // First we want to save the code to a string
@@ -961,8 +1041,19 @@ class TeXObject {
     image(img, x, y, picWidth, picHeight);
   }
 
+  //
+  // This is a better display function for the tex object
+  //
+  public void displayCoordinate(float x, float y){
+    pushMatrix();
+    translate(width/2, height/2);
+    this.display(x*scaleFactor-picWidth/2.0f, -y * scaleFactor - picHeight/2.0f);
+    popMatrix();
+  }
+
+
   /**
-   This method scales the image
+  *This method scales the image
    **/
   public void scale(float scaleFactor) {
     picWidth = picWidth*scaleFactor;
@@ -970,8 +1061,8 @@ class TeXObject {
   }
 
   /**
-   This method changes the opacity of the image. 
-   display() must be called again for it to take effect. 
+   *This method changes the opacity of the image. 
+   *display() must be called again for it to take effect. 
    **/
   public void setOpacity(float alpha) {
     this.alpha = alpha;

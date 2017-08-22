@@ -10,10 +10,14 @@ public final class Constants{
 	// as pixels. This doesn't allow us to show the detail we would like to.
 	// The literal meaning of the scale factor is that one unit on our graph
 	// or curve corresponds to SCALE_FACTOR pixels when displayed. 
-	public static final float SCALE_FACTOR = 100.0f; 
+	public static final float SCALE_FACTOR = 150.0f; 
 
 	// LINE CONSTANTS
 	public static final float DEFAULT_LINE_THICKNESS = 2.00f;
+
+	// BRACE CONSTANTS
+	public static final float BRACE_WIDTH = 20.0f;
+	public static final float BRACE_WEIGHT = 1.5f;
 
 
 	// Colors!!! 

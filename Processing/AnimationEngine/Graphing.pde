@@ -195,7 +195,7 @@ class Grid {
   PVector iVec, jVec;
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00;
-  float pixWeight = 1.00;
+  float pixWeight = 0.50;
 
   float opacity = 256;
 
@@ -263,7 +263,7 @@ class Grid {
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
       }
-      
+
       l.display();
     }
   }
