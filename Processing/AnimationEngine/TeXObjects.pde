@@ -38,9 +38,16 @@ class TeXObject {
   float frameWidth = Constants.TEX_FRAME_WIDTH;
 
   // color of tex object
-  int texColor = Constants.WHITE;
+  int texColor;
+
+  // Toggles background box
+  boolean showBackgroundBox = true;
 
   public TeXObject(String code) {
+    this(code, Constants.WHITE);
+  }
+
+  public TeXObject(String code, int fontColor){
     // First we want to save the code to a string
     this.code = code;
     // Then insert the code in the template
@@ -53,7 +60,7 @@ class TeXObject {
     // make the text white (MAYBE I WANT TO CHANGE THIS TO THE DISPLAY PORTION)
     //this.setColor(Constants.WHITE); // change this to coloring?
 
-    this.setColor(texColor);
+    this.setColor(fontColor);
     
     // The reason for scaling down the rendered TeX is that we render it 
     // at a very high resolution, so by defualt processing will display it
@@ -195,7 +202,7 @@ class TeXObject {
   public void makeBackgroundBox(){
     //tint(255, alpha); // this can be included if we want a fade in effect for our text
 
-    fill(0, 150); // We don't want the back rectangle to be super dark
+    fill(0, map(alpha, 0, 255, 0, 150)); // We don't want the back rectangle to be super dark
     noStroke();
 
     // draw box behind
@@ -211,10 +218,18 @@ class TeXObject {
     this.x = x;
     this.y = y;
 
+    tint(255,alpha);
+    if(showBackgroundBox){
     this.makeBackgroundBox();
+    }
     // draw the TeX
 
     image(img, x, y, picWidth, picHeight);
+    tint(255,255);
+  }
+
+  public void displayCenter(float x, float y){
+    display(x - picWidth/2.0, y - picHeight/2.0);
   }
 
   //
@@ -223,7 +238,7 @@ class TeXObject {
   public void displayCoordinate(float x, float y){
     pushMatrix();
     translate(width/2, height/2);
-    this.display(x*scaleFactor-picWidth/2.0, -y * scaleFactor - picHeight/2.0);
+    this.displayCenter(x*scaleFactor, -y * scaleFactor);
     popMatrix();
   }
   
@@ -238,13 +253,22 @@ class TeXObject {
     img.updatePixels();
   }
 
+  // Toggles Background BOx
+  public void hideBackgroundBox(){
+    showBackgroundBox = false;
+  }
+
+  public void showBackgroundBox(){
+    showBackgroundBox = true;
+  }
+
 
   /**
   *This method scales the image
    **/
-  public void scale(float scaleFactor) {
-    picWidth = picWidth*scaleFactor;
-    picHeight = picHeight*scaleFactor;
+  public void scale(float scl) {
+    picWidth = picWidth*scl;
+    picHeight = picHeight*scl;
   }
 
   /**

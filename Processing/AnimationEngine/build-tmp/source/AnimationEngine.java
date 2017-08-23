@@ -17,82 +17,121 @@ import java.io.IOException;
 public class AnimationEngine extends PApplet {
 
 // Our grid :)
-Grid backG = new Grid(new PVector(1,0), new PVector(0,1));
 Grid g = new Grid(new PVector(1, 0), new PVector(0, 1));
-Vector2D v,w;
-
-// counter
-float t = 0.0f;
+Vector2D i,j;
+TeXObject iLabel, jLabel, detLabel,bracesLabel, newDetLabel;
 Det2D d;
 
-PImage bg;
+int[] cues = {25,75,125,140,150,160};
 
-// vectors
-Vector2D i = new Vector2D(1,0, Constants.RED);
+Brace vert, horz;
 
-Vector2D j = new Vector2D(0,1); 
-Vector2D targetJ = new Vector2D(2,-1);
-
-Brace b;
-
-
-TeXObject label;
-TeXObject vectorLabel;
 
 public void setup(){
+  // for viewing on Retina displays we need to up the pixel density
   
   
+  // This is 720p
+  
 
-  label=new TeXObject("$ \\det \\left( \\begin{bmatrix} a & b \\\\ c & d \\end{bmatrix} \\right) = ad - bc.   $");
-
+  // start with a black background
   background(Constants.BLACK);
-  backG.setOpacity(56);
-  backG.display();
-  bg = get();
+
+  // initializng our vectors
+  i = new Vector2D(0,0, Constants.LIGHT_BLUE);
+  j = new Vector2D(0,0, Constants.PINK);
+
+  // TeX Objects
+  iLabel = new TeXObject("$\\vec{i}$", Constants.LIGHT_BLUE);
+  jLabel = new TeXObject("$\\vec{j}$", Constants.PINK);
+  detLabel = new TeXObject("$\\det(I)$", Constants.WHITE);
+  bracesLabel = new TeXObject("1");
+  newDetLabel = new TeXObject("1");
+
+  iLabel.setOpacity(0);
+  jLabel.setOpacity(0);
+  
+  detLabel.setOpacity(0);
+  detLabel.hideBackgroundBox();
+
+  newDetLabel.setOpacity(0);
+  newDetLabel.hideBackgroundBox();
 
 
-  b = new Brace(0,0,i.getX(), i.getY());
+  bracesLabel.setOpacity(0);
+  bracesLabel.hideBackgroundBox();
+
+  // Quad
+  d = new Det2D(i,j, Constants.YELLOW);
+  d.setOpacity(0.0f);
+
+  // Braces
+  horz = new Brace(0.5f, 1, 0.5f, 1);
+  horz.hide();
+  horz.flip();
+  vert = new Brace(1, 0.5f, 1, 0.5f);
+  vert.hide();
+
+  // Construct a standard grid
+  g.display();
+
+  i.display();
+  j.display();
+}
+
+public void draw(){
+	background(Constants.BLACK);
+
+	if(frameCount <= cues[0]){
+		i.set((float)frameCount/cues[0], 0);
+		j.set(0, (float)frameCount/cues[0]);
+	}
+	else if(cues[0] < frameCount && frameCount <= cues[1]){
+		iLabel.setOpacity( map(frameCount, cues[0], cues[1], 0, 255  ));
+		jLabel.setOpacity( map(frameCount, cues[0], cues[1], 0, 255  ));
+	}
+	else if(cues[1] < frameCount && frameCount <= cues[2]){
+		d.setOpacity( map(frameCount, cues[1], cues[2], 0, 255  ));
+		detLabel.setOpacity(map(frameCount, cues[2] - 20, cues[2], 0, 255));
+	}
+	else if(cues[2] < frameCount && frameCount <= cues[3]){
+		horz.show();
+		vert.show();
+		horz.set(map(frameCount, cues[2], cues[3], 0.5f, 0),
+			1,map(frameCount, cues[2], cues[3], 0.5f, 1) ,1);
+		vert.set(1,map(frameCount, cues[2], cues[3], 0.5f, 0)
+			,1, map(frameCount, cues[2], cues[3], 0.5f, 1));
+	}
+	else if(cues[3] < frameCount && frameCount <= cues[4]){
+		bracesLabel.setOpacity(map(frameCount, cues[3], cues[4], 0, 255));
+	}
+	else if(cues[4] < frameCount && frameCount <= cues[5]){
+		detLabel.setOpacity(map(frameCount, cues[4], cues[5], 255, 0));
+		detLabel.setWidth(lerp(detLabel.getWidth(), newDetLabel.getWidth(), 0.05f));
+		newDetLabel.setOpacity(map(frameCount, cues[4], cues[5], 0, 255));
+	}
+
+  g.display();
+  d.display();
 
   i.display();
   j.display();
 
-   d = new Det2D(i,j, Constants.YELLOW);
-   d.display();
-   b.display();
+  iLabel.displayCoordinate(i.getX() + 0.2f, i.getY() - 0.1f);
+  jLabel.displayCoordinate(j.getX() - 0.2f, j.getY() + 0.1f);
+  detLabel.displayCoordinate((i.getX() + j.getX())/2.0f, (i.getY() + j.getY())/2.0f);
+  newDetLabel.displayCoordinate((i.getX() + j.getX())/2.0f, (i.getY() + j.getY())/2.0f);
 
-   vectorLabel = new TeXObject("$\\det(A)$");
+  horz.display();
+  vert.display();
+
+  bracesLabel.displayCoordinate(0.5f, 1.3f);
+  bracesLabel.displayCoordinate(1.25f, 0.5f);
+
+  saveFrame("../Frames/#####.png"); 
 
 }
 
-public void draw(){
-  background(bg);
-
-  if(t < 1){
-    t = round((t + 0.01f)*100)/100.0f; // noticed some weird accuracy issues with floating point numbers
-    //println(t);
-  }
-
-  float lerpProgress = t;
-
-  Vector2D lerpJ = j.lerp(targetJ, lerpProgress);
-  lerpJ.setColor(Constants.LIGHT_BLUE);
-
-  // v.set(cos(t)*4,0);
-  g.setBasis(i,lerpJ);
-  d = new Det2D(i,lerpJ, Constants.YELLOW);
-  b = new Brace(0,0,lerpJ.getX(), lerpJ.getY());
-
-  g.display();
-  d.display();
-  i.display();
-
-  b.display();
-  lerpJ.display();
-
-
-  label.displayCoordinate(3,1);
-  vectorLabel.displayCoordinate((lerpJ.getX()+ i.getX())/2, (lerpJ.getY() +i.getY())/2);
-}
 
 
 
@@ -387,6 +426,7 @@ class Det2D{
   Vector2D v,w;
   float scaleFactor = Constants.SCALE_FACTOR;
   int fillColor;
+  float alpha = 255;
 
 
   public Det2D(Vector2D v,Vector2D w, int fillColor){
@@ -399,10 +439,20 @@ class Det2D{
     this(new Vector2D(x1,y1), new Vector2D(x2,y2), fillColor);
   }
 
-  public void display(){
-    fill(fillColor, 50);
-    stroke(fillColor);
+  public void setOpacity(float newAlpha){
+    alpha = newAlpha;
+  }
 
+  public void setVectors(Vector2D newV, Vector2D newW){
+    v = newV;
+    w = newW;
+  }
+
+
+  public void display(){
+    fill(fillColor, map(alpha, 0, 255, 0, 128));
+    //stroke(fillColor);
+    noStroke();
     pushMatrix();
     translate(width/2, height/2);
     quad(0,0, v.getX()*scaleFactor, -v.getY()*scaleFactor, 
@@ -426,6 +476,8 @@ class Brace{
   float braceWeight = Constants.BRACE_WEIGHT;
 
   TeXObject label;
+  boolean hasLabel=false;
+  boolean draw = true;
 
   public Brace(float x1, float y1, float x2, float y2){
     this.x1 = x1;
@@ -435,12 +487,37 @@ class Brace{
     length = sqrt(pow((x1 - x2),2) + pow((y1 - y2),2));
   }
 
-  public Brace(float x1, float y1, float x2, float y2, String label){
+  public Brace(float x1, float y1, float x2, float y2, String tex){
     this(x1,y1,x2,y2);
-    this.label = new TeXObject(label);
+    hasLabel=true;
+    this.label = new TeXObject(tex);  
+  }
+
+  // This is a helper function for the display function below 
+  public void drawLabel(){
+    if(hasLabel){
+      label.display(length/2 * scaleFactor, 20);
+      println("displayed");
+    }
+  }
+
+  public void hide(){
+    draw = false;
+  }
+
+  public void show(){
+    draw = true;
+  }
+
+  public void flip(){
+    braceWidth = -braceWidth;
   }
 
   public void display(){
+    if(draw == false){
+      return;
+    }
+
     float angle = 0;
 
     if(x1 == x2){
@@ -456,9 +533,10 @@ class Brace{
     }
 
     pushMatrix();
-    translate(width/2, height/2);
 
+    translate(width/2, height/2);
     translate(scaleFactor * x1, -1 * scaleFactor * y1);
+
     rotate(-angle);
     
     noFill();
@@ -471,7 +549,17 @@ class Brace{
       (scaleFactor * length)/2.0f, 0, 
       (scaleFactor * length)/2.0f, braceWidth);
 
+    drawLabel();
+
     popMatrix();
+  }
+
+  public void set(float newX1, float newY1, float newX2, float newY2){
+    x1 = newX1;
+    y1 = newY1;
+    x2 = newX2;
+    y2 = newY2;
+    length = sqrt( pow(x1 - x2,2) + pow(y1-y2,2)  );
   }
 }
 
@@ -720,11 +808,12 @@ class Grid {
   PVector iVec, jVec;
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00f;
-  float pixWeight = 0.50f;
+  float pixWeight = 1.0f;
 
   float opacity = 256;
 
-  int gridColor = Constants.WHITE;
+  int nonAxesColor = Constants.FADED_WHITE;
+  int axesColor = Constants.WHITE;
 
   public Grid(Vector2D i, Vector2D j){
     this(i.getPVector(), j.getPVector());
@@ -743,8 +832,12 @@ class Grid {
     this.yMax = yMax;
   }
   
-  public void setColor(int c){
-    gridColor = c;
+  public void setAxesColor(int c){
+    axesColor = c;
+  }
+
+  public void setNonAxesColor(int c){
+    nonAxesColor = c;
   }
 
   public void setBasis(PVector newI, PVector newJ) {
@@ -766,13 +859,14 @@ class Grid {
 
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
-        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, gridColor); 
+        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, nonAxesColor); 
 
       l.setThickness(pixWeight);
       l.setOpacity(opacity);
 
       if (k == 0) { // If this is the y axis
         l.setThickness(axesPixWeight); // thicken it some
+        l.setColor(axesColor);
       }
 
       l.display();
@@ -780,13 +874,14 @@ class Grid {
 
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
-        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, gridColor);
+        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, nonAxesColor);
 
       l.setOpacity(opacity);
       l.setThickness(pixWeight);
 
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
+        l.setColor(axesColor);
       }
 
       l.display();
@@ -876,9 +971,16 @@ class TeXObject {
   float frameWidth = Constants.TEX_FRAME_WIDTH;
 
   // color of tex object
-  int texColor = Constants.WHITE;
+  int texColor;
+
+  // Toggles background box
+  boolean showBackgroundBox = true;
 
   public TeXObject(String code) {
+    this(code, Constants.WHITE);
+  }
+
+  public TeXObject(String code, int fontColor){
     // First we want to save the code to a string
     this.code = code;
     // Then insert the code in the template
@@ -891,7 +993,7 @@ class TeXObject {
     // make the text white (MAYBE I WANT TO CHANGE THIS TO THE DISPLAY PORTION)
     //this.setColor(Constants.WHITE); // change this to coloring?
 
-    this.setColor(texColor);
+    this.setColor(fontColor);
     
     // The reason for scaling down the rendered TeX is that we render it 
     // at a very high resolution, so by defualt processing will display it
@@ -1033,7 +1135,7 @@ class TeXObject {
   public void makeBackgroundBox(){
     //tint(255, alpha); // this can be included if we want a fade in effect for our text
 
-    fill(0, 150); // We don't want the back rectangle to be super dark
+    fill(0, map(alpha, 0, 255, 0, 150)); // We don't want the back rectangle to be super dark
     noStroke();
 
     // draw box behind
@@ -1049,10 +1151,18 @@ class TeXObject {
     this.x = x;
     this.y = y;
 
+    tint(255,alpha);
+    if(showBackgroundBox){
     this.makeBackgroundBox();
+    }
     // draw the TeX
 
     image(img, x, y, picWidth, picHeight);
+    tint(255,255);
+  }
+
+  public void displayCenter(float x, float y){
+    display(x - picWidth/2.0f, y - picHeight/2.0f);
   }
 
   //
@@ -1061,7 +1171,7 @@ class TeXObject {
   public void displayCoordinate(float x, float y){
     pushMatrix();
     translate(width/2, height/2);
-    this.display(x*scaleFactor-picWidth/2.0f, -y * scaleFactor - picHeight/2.0f);
+    this.displayCenter(x*scaleFactor, -y * scaleFactor);
     popMatrix();
   }
   
@@ -1076,13 +1186,22 @@ class TeXObject {
     img.updatePixels();
   }
 
+  // Toggles Background BOx
+  public void hideBackgroundBox(){
+    showBackgroundBox = false;
+  }
+
+  public void showBackgroundBox(){
+    showBackgroundBox = true;
+  }
+
 
   /**
   *This method scales the image
    **/
-  public void scale(float scaleFactor) {
-    picWidth = picWidth*scaleFactor;
-    picHeight = picHeight*scaleFactor;
+  public void scale(float scl) {
+    picWidth = picWidth*scl;
+    picHeight = picHeight*scl;
   }
 
   /**
@@ -1125,7 +1244,7 @@ class TeXObject {
     return code;
   }
 }
-  public void settings() {  size(1000,500);  pixelDensity(2); }
+  public void settings() {  size(1280,720);  pixelDensity(2); }
   static public void main(String[] passedArgs) {
     String[] appletArgs = new String[] { "AnimationEngine" };
     if (passedArgs != null) {

@@ -195,11 +195,12 @@ class Grid {
   PVector iVec, jVec;
   float xMin, xMax, yMin, yMax;
   float axesPixWeight = 2.00;
-  float pixWeight = 0.50;
+  float pixWeight = 1.0;
 
   float opacity = 256;
 
-  int gridColor = Constants.WHITE;
+  int nonAxesColor = Constants.FADED_WHITE;
+  int axesColor = Constants.WHITE;
 
   public Grid(Vector2D i, Vector2D j){
     this(i.getPVector(), j.getPVector());
@@ -218,8 +219,12 @@ class Grid {
     this.yMax = yMax;
   }
   
-  public void setColor(int c){
-    gridColor = c;
+  public void setAxesColor(int c){
+    axesColor = c;
+  }
+
+  public void setNonAxesColor(int c){
+    nonAxesColor = c;
   }
 
   public void setBasis(PVector newI, PVector newJ) {
@@ -241,13 +246,14 @@ class Grid {
 
     for (int k = (int)xMin; k <= xMax; k++) {
       Line l = new Line(k*iX + (int)yMin*jX, k*iY + (int)yMin*jY, 
-        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, gridColor); 
+        k*iX + (int)yMax*jX, k*iY + (int)yMax*jY, nonAxesColor); 
 
       l.setThickness(pixWeight);
       l.setOpacity(opacity);
 
       if (k == 0) { // If this is the y axis
         l.setThickness(axesPixWeight); // thicken it some
+        l.setColor(axesColor);
       }
 
       l.display();
@@ -255,13 +261,14 @@ class Grid {
 
     for (int k = (int)yMin; k <= yMax; k++) {
       Line l = new Line(k*jX + (int)xMin*iX, k*jY + (int)xMin*iY, 
-        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, gridColor);
+        k*jX + (int)xMax*iX, k*jY + (int)xMax*iY, nonAxesColor);
 
       l.setOpacity(opacity);
       l.setThickness(pixWeight);
 
       if (k == 0) { // if this is the x axis
         l.setThickness(axesPixWeight); // thicken it some
+        l.setColor(axesColor);
       }
 
       l.display();

@@ -227,6 +227,7 @@ class Det2D{
   Vector2D v,w;
   float scaleFactor = Constants.SCALE_FACTOR;
   int fillColor;
+  float alpha = 255;
 
 
   public Det2D(Vector2D v,Vector2D w, int fillColor){
@@ -239,10 +240,20 @@ class Det2D{
     this(new Vector2D(x1,y1), new Vector2D(x2,y2), fillColor);
   }
 
-  public void display(){
-    fill(fillColor, 50);
-    stroke(fillColor);
+  public void setOpacity(float newAlpha){
+    alpha = newAlpha;
+  }
 
+  public void setVectors(Vector2D newV, Vector2D newW){
+    v = newV;
+    w = newW;
+  }
+
+
+  public void display(){
+    fill(fillColor, map(alpha, 0, 255, 0, 128));
+    //stroke(fillColor);
+    noStroke();
     pushMatrix();
     translate(width/2, height/2);
     quad(0,0, v.getX()*scaleFactor, -v.getY()*scaleFactor, 
@@ -266,6 +277,8 @@ class Brace{
   float braceWeight = Constants.BRACE_WEIGHT;
 
   TeXObject label;
+  boolean hasLabel=false;
+  boolean draw = true;
 
   public Brace(float x1, float y1, float x2, float y2){
     this.x1 = x1;
@@ -275,12 +288,37 @@ class Brace{
     length = sqrt(pow((x1 - x2),2) + pow((y1 - y2),2));
   }
 
-  public Brace(float x1, float y1, float x2, float y2, String label){
+  public Brace(float x1, float y1, float x2, float y2, String tex){
     this(x1,y1,x2,y2);
-    this.label = new TeXObject(label);
+    hasLabel=true;
+    this.label = new TeXObject(tex);  
+  }
+
+  // This is a helper function for the display function below 
+  public void drawLabel(){
+    if(hasLabel){
+      label.display(length/2 * scaleFactor, 20);
+      println("displayed");
+    }
+  }
+
+  public void hide(){
+    draw = false;
+  }
+
+  public void show(){
+    draw = true;
+  }
+
+  public void flip(){
+    braceWidth = -braceWidth;
   }
 
   public void display(){
+    if(draw == false){
+      return;
+    }
+
     float angle = 0;
 
     if(x1 == x2){
@@ -296,9 +334,10 @@ class Brace{
     }
 
     pushMatrix();
-    translate(width/2, height/2);
 
+    translate(width/2, height/2);
     translate(scaleFactor * x1, -1 * scaleFactor * y1);
+
     rotate(-angle);
     
     noFill();
@@ -311,7 +350,17 @@ class Brace{
       (scaleFactor * length)/2.0, 0, 
       (scaleFactor * length)/2.0, braceWidth);
 
+    drawLabel();
+
     popMatrix();
+  }
+
+  public void set(float newX1, float newY1, float newX2, float newY2){
+    x1 = newX1;
+    y1 = newY1;
+    x2 = newX2;
+    y2 = newY2;
+    length = sqrt( pow(x1 - x2,2) + pow(y1-y2,2)  );
   }
 }
 
