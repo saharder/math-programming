@@ -140,6 +140,10 @@ class Vector2D{
   public Vector2D(PVector vector){
      this(vector.x, vector.y);
   }
+
+  public Vector2D(PVector vector, int c){
+    this(vector.x, vector.y, c);
+  }
   
   // Allows one to not have to make intermediary PVector object
   public Vector2D(float x, float y){
@@ -219,7 +223,7 @@ class Vector2D{
      PVector copy = vector.get(); 
 
     copy.lerp(other.getPVector(), lerpFactor);
-    return new Vector2D(copy);
+    return new Vector2D(copy, vectorColor);
   }
 }
 
@@ -298,7 +302,7 @@ class Brace{
   public void drawLabel(){
     if(hasLabel){
       label.display(length/2 * scaleFactor, 20);
-      println("displayed");
+      //println("displayed");
     }
   }
 

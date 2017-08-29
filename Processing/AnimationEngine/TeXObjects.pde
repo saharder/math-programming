@@ -275,8 +275,7 @@ class TeXObject {
    *This method changes the opacity of the image. 
    *display() must be called again for it to take effect. 
    **/
-
-  // NOT ACTIVE AT THE MOMENT
+   
   public void setOpacity(float alpha) {
     this.alpha = alpha;
   }
