@@ -10,7 +10,7 @@ Det2D d;
 
 
 // Scene lengths
-int[] sceneLengths = {50,50,50,50,50,50};
+int[] sceneLengths = {100,50,50,50,50,50};
 
 int[] cues; 
 
@@ -91,8 +91,6 @@ void setup(){
 }
 
 void draw(){
-  translate(-width/2 + 50, height/2 - 20);
-
 	background(Constants.BLACK);
 
 	if(frameCount <= cues[0]){
@@ -163,7 +161,7 @@ void draw(){
   newDetLabel.displayCoordinate((i.getX() + j.getX())/2.0, (i.getY() + j.getY())/2.0);
 
   
-  //saveFrame("../Frames/#####.png"); 
+  psaveFrame("../Frames/#####.png"); 
 
 }
 

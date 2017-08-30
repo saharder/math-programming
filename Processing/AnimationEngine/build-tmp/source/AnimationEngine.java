@@ -28,7 +28,7 @@ Det2D d;
 
 
 // Scene lengths
-int[] sceneLengths = {100,50,50,50,50,50};
+int[] sceneLengths = {50,50,50,50,50,50};
 
 int[] cues; 
 
@@ -109,49 +109,62 @@ public void setup(){
 }
 
 public void draw(){
+  translate(-width/2 + 50, height/2 - 20);
+
 	background(Constants.BLACK);
 
 	if(frameCount <= cues[0]){
-    i = i.lerp(iTarget1, 0.5f*sin(map(frameCount, 0, cues[0], -PI/2, PI/2)) + 0.5f);
-    j = j.lerp(jTarget1, 0.5f*sin(map(frameCount, 0, cues[0], -PI/2, PI/2)) + 0.5f);
+    // change our i and j vectors along with the parallelogram
+    i = i.lerp(iTarget1, easeInSin(frameCount, 0, cues[0], 0, 1));
+    j = j.lerp(jTarget1, easeInSin(frameCount, 0, cues[0], 0, 1));
+    // adjust our parellelogram accordingly
     d.setVectors(i,j);
+    // fadeOut our detLabel
     detLabel.setOpacity(map(frameCount, 0, 5, 255,0));
 
-    iLabel1.setOpacity(map(frameCount, 0, 5, 255, 0));
-    iLabel2.setOpacity(map(frameCount, 0, cues[0], 0, 255));
+    // change jLabel from [b // d] to [0 // 0]
+    jLabel1.setOpacity(easeOutQuad(frameCount, 0, cues[0]/2, 0, 255));
+    jLabel2.setOpacity(easeInQuad(frameCount, 0, cues[0]/2, 0, 255));
 	}
 	else if(cues[0] < frameCount && frameCount <= cues[1]){
-    i = i.lerp(iTarget2, 0.5f*sin(map(frameCount, cues[0], cues[1], -PI/2, PI/2)) + 0.5f);
-    j = j.lerp(jTarget2, 0.5f*sin(map(frameCount, cues[0], cues[1], -PI/2, PI/2)) + 0.5f);
+    // change our i and j vectors along with the parallelogram
+    i = i.lerp(iTarget2, easeInSin(frameCount, cues[0], cues[1], 0, 1));
+    j = j.lerp(jTarget2, easeInSin(frameCount, cues[0], cues[1], 0, 1));
     d.setVectors(i,j);
     detLabel.setOpacity(map(frameCount, cues[1]-20, cues[1], 0,255));
 
-    iLabel2.setOpacity(255 - 255*(0.5f*sin(map(frameCount, cues[0], cues[1], -PI/2, PI/2)) + 0.5f));
-    iLabel1.setOpacity(255*(0.5f*sin(map(frameCount, 0, cues[0], -PI/2, PI/2)) + 0.5f));
+    jLabel1.setOpacity(easeInQuad(frameCount, cues[0], (cues[0] + cues[1])/2, 0, 255));
+    jLabel2.setOpacity(easeOutQuad(frameCount, cues[0], (cues[0]+ cues[1])/2, 0, 255));
+
 	}  
 	else if(cues[1] < frameCount && frameCount <= cues[2]){
-    i = i.lerp(iTarget3, 0.5f*sin(map(frameCount, cues[1], cues[2], -PI/2, PI/2)) + 0.5f);
-    j = j.lerp(jTarget3, 0.5f*sin(map(frameCount, cues[1], cues[2], -PI/2, PI/2)) + 0.5f);
+    // change our i and j vectors along with the parallelogram
+    i = i.lerp(iTarget3, easeInSin(frameCount, cues[1], cues[2], 0, 1));
+    j = j.lerp(jTarget3, easeInSin(frameCount, cues[1], cues[2], 0, 1));
     d.setVectors(i,j);
     detLabel.setOpacity(map(frameCount, cues[1], cues[1] + 5, 255,0));
 
-    jLabel1.setOpacity(255 - 255*(0.5f*sin(map(frameCount, cues[0], cues[1], -PI/2, PI/2)) + 0.5f));
-    jLabel2.setOpacity(255*(0.5f*sin(map(frameCount, 0, cues[0], -PI/2, PI/2)) + 0.5f));
+    iLabel1.setOpacity(easeOutQuad(frameCount, cues[1], (cues[1] + cues[2])/2, 0, 255));
+    iLabel2.setOpacity(easeInQuad(frameCount, cues[1], (cues[1] + cues[2])/2, 0, 255));
 	}
 	else if(cues[2] < frameCount && frameCount <= cues[3]){
-    i = i.lerp(iTarget2, 0.5f*sin(map(frameCount, cues[2], cues[3], -PI/2, PI/2)) + 0.5f);
-    j = j.lerp(jTarget2, 0.5f*sin(map(frameCount, cues[2], cues[3], -PI/2, PI/2)) + 0.5f);
+    // change our i and j vectors along with the parallelogram
+    i = i.lerp(iTarget1, easeInSin(frameCount, cues[2], cues[3], 0, 1));
+    j = j.lerp(jTarget2, easeInSin(frameCount, cues[2], cues[3], 0, 1));
     d.setVectors(i,j);
     detLabel.setOpacity(map(frameCount, cues[3]-20, cues[3], 0,255));
 
-    jLabel1.setOpacity(255*(0.5f*sin(map(frameCount, 0, cues[0], -PI/2, PI/2)) + 0.5f));
-    jLabel2.setOpacity(255 - 255*(0.5f*sin(map(frameCount, cues[0], cues[1], -PI/2, PI/2)) + 0.5f));
+    iLabel1.setOpacity(easeInQuad(frameCount, cues[2], (cues[2] + cues[3])/2, 0, 255));
+    iLabel2.setOpacity(easeOutQuad(frameCount, cues[2], (cues[2] + cues[3])/2, 0, 255));
 	}
 	else if(cues[3] < frameCount && frameCount <= cues[4]){
 	}
 	else if(cues[4] < frameCount && frameCount <= cues[5]){
 	}
 
+
+  // Layering and displaying everything after we've computed everything
+  // the ordering IS IMPORTANT
   g.display();
   d.display();
 
@@ -236,6 +249,51 @@ class PlotAnimation{
   boolean isAnimating = false;
 
   
+}
+public void easeOutLerp(int value, int low1, int high1, int low2, int high2){
+
+}
+
+public float easeInQuad(int value, int low1, int high1, int low2, int high2){
+	if(value < low1){
+		return low2;
+	}
+	else if(value > high1){
+		return high2;
+	}
+
+	float x = map(value, low1, high1, 0,1);
+	return (high2 - low2)*( - pow(x-1,2) + 1) + low2;
+}
+
+public float easeOutQuad(int value, int low1, int high1, int low2, int high2){
+	if(value < low1){
+		return high2;
+	}
+	else if(value > high1){
+		return low2;
+	}
+
+	float x = map(value, low1, high1, 0,1);
+	return (high2 - low2)*( - pow(x,2) + 1) + low2;
+}
+
+
+public float easeInSin(int value, int low1, int high1, int low2, int high2){
+	if(value < low1){
+		return low2;
+	}
+	else if(value > high1){
+		return high2;
+	}
+
+	float x = map(value, low1, high1, -PI/2, PI/2);
+	float output = (high2 -low2)*(0.5f*sin(x) + 0.5f) + low2;
+	return output;
+}
+
+public float easeOutSin(int value, int low1, int high1, int low2, int high2){
+	return (high2+low2) - easeInSin(value, low1, high1, low2, high2);
 }
 /** 
 * This class provides graphical capabilities for drawing points
