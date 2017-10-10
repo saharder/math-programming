@@ -1,5 +1,5 @@
 // This animation demonstrates what happens to the determinant
-// when we scale it to 0
+// when we scale one side by some constant c
 
 
 // Our grid :)
@@ -51,7 +51,7 @@ void setup(){
   jTarget3 = new Vector2D(1.5,2, Constants.PINK);
 
   // vector labels
-
+ 
   iLabel1 = new TeXObject("$\\begin{bmatrix} b \\\\ d \\end{bmatrix}$", Constants.LIGHT_BLUE);
   jLabel1 = new TeXObject("$\\begin{bmatrix} a \\\\ c \\end{bmatrix}$", Constants.PINK);
 
